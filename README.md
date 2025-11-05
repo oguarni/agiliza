@@ -221,14 +221,46 @@ CREATE TABLE "Tasks" (
 CREATE INDEX "idx_tasks_user_id" ON "Tasks"("user_id");
 ```
 
-## Architecture
+## Architecture (C4 Model)
 
-This project follows **Clean Architecture** principles:
+This project follows **Clean Architecture** principles, implemented as an N-Layer architecture to ensure a strong separation of concerns and dependency inversion.
 
-1. **Entity Layer** (Models): Sequelize models define data structure
-2. **Data Access Layer** (Repositories): Abstract database operations
-3. **Business Logic Layer** (Services): Implement use cases and business rules
-4. **API Layer** (Controllers): Handle HTTP requests/responses and validation
+The architecture is documented below using the C4 model.
+
+### Level 1: System Context
+
+This C4 Level 1 diagram illustrates the highest-level interaction with the system.
+
+**[System Context] Task Management System**
+![C4 System Context Diagram](./docs/diagrams/SystemContext.png)
+* **User (Person):** The primary actor, "Student/Professional managing tasks".
+* **Task Management System (Software System):** The system itself, "MVP system to create and manage personal tasks".
+* **Interaction:** The "User" "Uses" the "Task Management System" via [HTTPS].
+
+### Level 2: Container
+
+This C4 Level 2 diagram details the main deployable containers within the "Task Management System".
+
+**[Container] Task Management System**
+![C4 Container Diagram](./docs/diagrams/Container.png)
+* **User (Person):** Initiates interaction by "Using" the Frontend via [HTTPS].
+* **Frontend (SPA) (Container: React / Vite):** The user interface. "Makes API calls" to the Backend via [JSON/HTTPS].
+* **Backend (API) (Container: Node.js / Express):** Validates, applies business rules, and exposes the API. "Reads and Writes" to the database via [SQL / Sequelize].
+* **Database (Container: PostgreSQL):** Stores user and task data.
+
+### Level 3: Component (Backend)
+
+This C4 Level 3 diagram details the internal component architecture of the "Backend (API)" container.
+
+**[Component] Task Management System - Backend (API)**
+![C4 Component Diagram - Backend](./docs/diagrams/Component_Backend.png)
+* The **Frontend (SPA)** sends an "API Request" [JSON].
+* **Middlewares (Component: Express / JWT):** Receives the request and handles authentication.
+* **Controllers (Component: Express):** Receives the verified request, validates HTTP inputs.
+* **Services (Component: TypeScript / SOLID):** Called by the Controller to orchestrate use cases and business logic.
+* **Repositories (Component: Sequelize (ORM)):** Called by the Service to abstract data access.
+* **Models (Component: Sequelize (ORM)):** Used by Repositories to define entities (User, Task).
+* **Repositories** execute the "SQL Query" on the **Database**.
 
 ### Key Design Decisions
 
