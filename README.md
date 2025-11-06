@@ -271,6 +271,209 @@ This C4 Level 3 diagram details the internal component architecture of the "Back
 - **JWT Authentication**: Stateless authentication with Bearer tokens
 - **Input Validation**: Using express-validator at the Controller layer
 
+## Clean Architecture Implementation
+
+The backend has been enhanced with a full Clean Architecture implementation following SOLID principles and Domain-Driven Design (DDD) patterns.
+
+### Project Structure (Backend)
+
+```
+backend/src/
+├── config/          # Application configuration
+│   ├── database.js  # Database configuration
+│   └── app.config.ts # Centralized app configuration
+├── domain/          # Domain Layer (Business Entities)
+│   └── entities/
+│       ├── Task.ts  # Task domain entity with business methods
+│       └── User.ts  # User domain entity with business methods
+├── interfaces/      # Interface definitions
+│   ├── ITaskRepository.ts  # Task repository interface
+│   ├── IUserRepository.ts  # User repository interface
+│   ├── ITaskService.ts     # Task service interface
+│   ├── IAuthService.ts     # Auth service interface
+│   └── index.ts            # Centralized exports
+├── usecases/        # Use Cases (Application Logic)
+│   ├── CreateTaskUseCase.ts  # Create task use case
+│   ├── UpdateTaskUseCase.ts  # Update task use case
+│   ├── DeleteTaskUseCase.ts  # Delete task use case
+│   ├── GetTasksUseCase.ts    # Get tasks use case
+│   └── index.ts
+├── repositories/    # Data Access Layer
+│   ├── TaskRepository.ts  # Task data access
+│   └── UserRepository.ts  # User data access
+├── services/        # Business Logic Layer
+│   ├── TaskService.ts  # Task business logic
+│   └── AuthService.ts  # Authentication business logic
+├── controllers/     # API Layer (Presentation)
+│   ├── TaskController.ts
+│   └── AuthController.ts
+├── mappers/         # Object Mappers
+│   ├── TaskMapper.ts  # Maps between Task models and entities
+│   └── UserMapper.ts  # Maps between User models and entities
+├── validators/      # Business Rule Validators
+│   ├── TaskValidator.ts  # Task validation rules
+│   └── UserValidator.ts  # User validation rules
+├── factories/       # Factory Pattern
+│   ├── RepositoryFactory.ts  # Creates repository instances
+│   └── ServiceFactory.ts     # Creates service instances
+├── container/       # Dependency Injection Container
+│   └── index.ts     # InversifyJS container configuration
+├── utils/           # Utilities
+│   └── logger.ts    # Logging abstraction (ILogger)
+├── models/          # ORM Models (Sequelize)
+│   ├── Task.ts
+│   └── User.ts
+├── routes/          # Express routes
+├── middlewares/     # Middleware functions
+└── errors/          # Custom error classes
+```
+
+### Architecture Layers
+
+#### 1. Domain Layer (`domain/entities/`)
+Contains pure business logic and entities with no external dependencies.
+
+**Task Entity:**
+- `isOwnedBy(userId)` - Check task ownership
+- `isCompleted()` - Check completion status
+- `isOverdue()` - Check if task is overdue
+- `getPriorityValue()` - Get priority as numeric value
+
+**User Entity:**
+- `hasValidEmail()` - Validate email format
+- `toSafeObject()` - Get user data without password
+
+#### 2. Use Cases Layer (`usecases/`)
+Application-specific business rules that orchestrate the flow of data.
+
+- `CreateTaskUseCase` - Handles task creation with validation
+- `UpdateTaskUseCase` - Handles task updates with authorization
+- `DeleteTaskUseCase` - Handles task deletion with authorization
+- `GetTasksUseCase` - Handles task retrieval with pagination
+
+Each use case:
+- Validates input using validators
+- Applies business rules
+- Uses repositories for data access
+- Logs operations
+- Returns domain entities
+
+#### 3. Interface Layer (`interfaces/`)
+Defines contracts for all dependencies:
+
+- `ITaskRepository` - Task data access contract
+- `IUserRepository` - User data access contract
+- `ITaskService` - Task service contract
+- `IAuthService` - Auth service contract
+- `ILogger` - Logging contract
+
+#### 4. Repositories (`repositories/`)
+Implements data access interfaces and uses mappers to convert between ORM models and domain entities.
+
+**Features:**
+- Returns domain entities (not ORM models)
+- Uses TaskMapper/UserMapper for conversions
+- Implements pagination support
+- Abstracts database operations
+
+#### 5. Mappers (`mappers/`)
+Convert between different representations:
+
+```typescript
+TaskMapper.toDomain(model) // ORM Model -> Domain Entity
+TaskMapper.toModel(entity)  // Domain Entity -> ORM Model
+TaskMapper.toDomainList(models) // Array conversion
+```
+
+#### 6. Validators (`validators/`)
+Validate business rules before data processing:
+
+- `TaskValidator.validateCreate(data)` - Validates task creation
+- `TaskValidator.validateUpdate(data)` - Validates task updates
+- `UserValidator.validateRegister(data)` - Validates user registration
+- `UserValidator.validateLogin(data)` - Validates login credentials
+
+Returns: `{ isValid: boolean, errors: string[] }`
+
+#### 7. Factories (`factories/`)
+Create instances with proper dependency injection:
+
+```typescript
+RepositoryFactory.createTaskRepository()
+ServiceFactory.createTaskService()
+```
+
+#### 8. Dependency Injection Container (`container/`)
+Uses InversifyJS for dependency injection:
+
+```typescript
+container.bind<ITaskRepository>('TaskRepository').to(TaskRepository)
+container.bind<ILogger>('Logger').toDynamicValue(...)
+```
+
+#### 9. Configuration (`config/app.config.ts`)
+Centralizes all environment variables and settings:
+
+```typescript
+AppConfig.jwt.secret
+AppConfig.database.host
+AppConfig.server.port
+```
+
+#### 10. Logger (`utils/logger.ts`)
+Provides logging abstraction:
+
+```typescript
+const logger = new ConsoleLogger('TaskService');
+logger.info('Task created', { taskId: 1 });
+logger.error('Task creation failed', error);
+```
+
+### Design Patterns Used
+
+1. **Repository Pattern** - Abstracts data access
+2. **Factory Pattern** - Creates instances with dependencies
+3. **Dependency Injection** - Inverts control flow
+4. **Mapper Pattern** - Converts between representations
+5. **Strategy Pattern** - Validators implement validation strategies
+6. **Use Case Pattern** - Encapsulates application logic
+
+### Benefits
+
+- **Testability**: Each layer can be tested independently
+- **Maintainability**: Clear separation of concerns
+- **Scalability**: Easy to add new features
+- **Flexibility**: Easy to swap implementations
+- **Domain-Centric**: Business logic is independent of frameworks
+
+### Pagination Support
+
+The TaskRepository now supports pagination:
+
+```typescript
+const result = await taskRepository.findAllByUserIdPaginated(userId, {
+  page: 1,
+  limit: 20,
+  orderBy: 'created_at',
+  order: 'DESC'
+});
+
+// Returns: { data: Task[], total: number, page: number, totalPages: number }
+```
+
+### Testing
+
+Tests are provided for:
+- ✅ Validators (TaskValidator, UserValidator)
+- ✅ Use Cases (CreateTaskUseCase with mocked dependencies)
+- ✅ Services (Integration tests)
+- ✅ Controllers (API tests)
+
+Run tests with:
+```bash
+npm test
+```
+
 ## Usage
 
 1. Open `http://localhost:3000` in your browser
