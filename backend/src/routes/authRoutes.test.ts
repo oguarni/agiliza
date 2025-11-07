@@ -6,12 +6,16 @@ import authRoutes from './authRoutes';
 import errorHandler from '../middlewares/errorHandler';
 
 // Mock the models module to use test database
+jest.mock('../models', () => {
+  const testDb = require('../tests/test-setup').createTestDatabase();
+  return {
+    sequelize: testDb.sequelize,
+    User: testDb.User,
+    Task: testDb.Task,
+  };
+});
+
 const testDb = createTestDatabase();
-jest.mock('../models', () => ({
-  sequelize: testDb.sequelize,
-  User: testDb.User,
-  Task: testDb.Task,
-}));
 
 describe('Authentication Endpoints', () => {
   let app: Application;
