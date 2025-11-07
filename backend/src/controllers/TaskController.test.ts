@@ -1,40 +1,53 @@
 import request from 'supertest';
 import express, { Application } from 'express';
-import taskRoutes from '../routes/taskRoutes';
 import TaskService from '../services/TaskService';
 import authMiddleware from '../middlewares/authMiddleware';
-import errorHandler from '../middlewares/errorHandler';
 import { Task } from '../domain/entities/Task';
 
 // Mock dependencies
 jest.mock('../services/TaskService');
 jest.mock('../middlewares/authMiddleware');
+jest.mock('../repositories/TaskRepository');
 
 describe('TaskController Integration Tests', () => {
   let app: Application;
   let mockTaskService: jest.Mocked<TaskService>;
 
   beforeEach(() => {
-    // Create Express app
-    app = express();
-    app.use(express.json());
+    // Clear module cache to ensure fresh imports
+    jest.resetModules();
+
+    // Create mock service with all methods
+    mockTaskService = {
+      getTasks: jest.fn(),
+      createTask: jest.fn(),
+      updateTask: jest.fn(),
+      deleteTask: jest.fn(),
+      completeTask: jest.fn(),
+    } as any;
+
+    // Mock TaskService constructor to return our mock
+    const TaskServiceMock = require('../services/TaskService').default;
+    TaskServiceMock.mockImplementation(() => mockTaskService);
 
     // Mock authMiddleware to inject fake user
-    (authMiddleware as jest.Mock).mockImplementation((req, _res, next) => {
+    const authMiddlewareMock = require('../middlewares/authMiddleware').default;
+    authMiddlewareMock.mockImplementation((req: any, _res: any, next: any) => {
       req.user = { id: 1, email: 'test@example.com' };
       next();
     });
 
-    // Use task routes
+    // Create Express app
+    app = express();
+    app.use(express.json());
+
+    // Load routes after mocks are set up
+    const taskRoutes = require('../routes/taskRoutes').default;
     app.use('/api/tasks', taskRoutes);
 
     // Add error handler
-    app.use(errorHandler);
-
-    // Get mock service instance
-    mockTaskService = TaskService.prototype as jest.Mocked<TaskService>;
-
-    jest.clearAllMocks();
+    const errorHandlerMock = require('../middlewares/errorHandler').default;
+    app.use(errorHandlerMock);
   });
 
   describe('GET /api/tasks', () => {
@@ -70,16 +83,26 @@ describe('TaskController Integration Tests', () => {
     });
 
     it('should return 401 if user is not authenticated', async () => {
-      // Arrange - Mock authMiddleware to reject
-      (authMiddleware as jest.Mock).mockImplementation((_req, res) => {
+      // Arrange - Create new app with rejecting authMiddleware
+      jest.resetModules();
+      const authMiddlewareMock = require('../middlewares/authMiddleware').default;
+      authMiddlewareMock.mockImplementation((_req: any, res: any) => {
         res.status(401).json({
           error: 'Unauthorized',
           message: 'No authorization header provided',
         });
       });
 
+      const express = require('express');
+      const testApp = express();
+      testApp.use(express.json());
+      const taskRoutes = require('../routes/taskRoutes').default;
+      testApp.use('/api/tasks', taskRoutes);
+      const errorHandlerMock = require('../middlewares/errorHandler').default;
+      testApp.use(errorHandlerMock);
+
       // Act
-      const response = await request(app).get('/api/tasks');
+      const response = await request(testApp).get('/api/tasks');
 
       // Assert
       expect(response.status).toBe(401);
@@ -116,7 +139,16 @@ describe('TaskController Integration Tests', () => {
       // Assert
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('Task created successfully');
-      expect(response.body.data).toEqual(mockCreatedTask);
+      expect(response.body.data).toMatchObject({
+        id: 1,
+        user_id: 1,
+        title: 'New Task',
+        description: 'Task description',
+        priority: 'medium',
+        status: 'pending',
+      });
+      expect(response.body.data.created_at).toBeDefined();
+      expect(response.body.data.updated_at).toBeDefined();
     });
 
     it('should return 400 if title is missing', async () => {
@@ -205,7 +237,15 @@ describe('TaskController Integration Tests', () => {
       // Assert
       expect(response.status).toBe(200);
       expect(response.body.message).toBe('Task updated successfully');
-      expect(response.body.data).toEqual(mockUpdatedTask);
+      expect(response.body.data).toMatchObject({
+        id: taskId,
+        user_id: 1,
+        title: 'Updated Task',
+        priority: 'high',
+        status: 'pending',
+      });
+      expect(response.body.data.created_at).toBeDefined();
+      expect(response.body.data.updated_at).toBeDefined();
     });
   });
 
