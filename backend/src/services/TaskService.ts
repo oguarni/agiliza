@@ -9,6 +9,7 @@ interface CreateTaskDTO {
   description?: string;
   priority?: 'low' | 'medium' | 'high';
   due_date?: Date;
+  project_id?: number | null;
 }
 
 // Update task DTO
@@ -18,6 +19,7 @@ interface UpdateTaskDTO {
   status?: 'pending' | 'completed';
   priority?: 'low' | 'medium' | 'high';
   due_date?: Date;
+  project_id?: number | null;
 }
 
 // TaskService class - Business Logic Layer
