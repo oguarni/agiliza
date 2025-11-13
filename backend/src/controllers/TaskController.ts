@@ -65,7 +65,7 @@ class TaskController {
 
       // Get user ID from authenticated request
       const userId = req.user!.id;
-      const { title, description, priority, due_date } = req.body;
+      const { title, description, priority, due_date, project_id } = req.body;
 
       // Call service
       const task = await this.taskService.createTask(userId, {
@@ -73,6 +73,7 @@ class TaskController {
         description,
         priority,
         due_date: due_date ? new Date(due_date) : undefined,
+        project_id: project_id || null,
       });
 
       res.status(201).json({
@@ -133,7 +134,7 @@ class TaskController {
         return;
       }
 
-      const { title, description, status, priority, due_date } = req.body;
+      const { title, description, status, priority, due_date, project_id } = req.body;
 
       // Call service
       const task = await this.taskService.updateTask(userId, taskId, {
@@ -142,6 +143,7 @@ class TaskController {
         status,
         priority,
         due_date: due_date ? new Date(due_date) : undefined,
+        project_id: project_id !== undefined ? project_id : undefined,
       });
 
       res.status(200).json({
