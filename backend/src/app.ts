@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes';
 import taskRoutes from './routes/taskRoutes';
 import projectRoutes from './routes/projectRoutes';
+import taskCommentRoutes from './routes/taskCommentRoutes';
+import taskAttachmentRoutes from './routes/taskAttachmentRoutes';
 import errorHandler from './middlewares/errorHandler';
 import { sequelize } from './models';
 
@@ -27,6 +29,8 @@ app.get('/health', (_req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api', taskCommentRoutes);
+app.use('/api', taskAttachmentRoutes);
 
 // 404 handler
 app.use((_req: Request, res: Response) => {
