@@ -42,6 +42,10 @@ router.post(
       .optional()
       .isISO8601()
       .withMessage('Due date must be a valid date'),
+    body('project_id')
+      .optional()
+      .isInt()
+      .withMessage('Project ID must be an integer'),
   ],
   taskController.createTask
 );
@@ -75,6 +79,10 @@ router.put(
       .optional()
       .isISO8601()
       .withMessage('Due date must be a valid date'),
+    body('project_id')
+      .optional()
+      .isInt()
+      .withMessage('Project ID must be an integer'),
   ],
   taskController.updateTask
 );
