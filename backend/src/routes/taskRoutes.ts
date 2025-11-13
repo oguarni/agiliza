@@ -18,6 +18,9 @@ router.use(authMiddleware);
 // GET /api/tasks - List all tasks for the logged-in user
 router.get('/', taskController.getTasks);
 
+// GET /api/tasks/kanban - Get tasks organized as Kanban board
+router.get('/kanban', taskController.getTasksKanban);
+
 // POST /api/tasks - Create a new task
 router.post(
   '/',
@@ -75,6 +78,9 @@ router.put(
   ],
   taskController.updateTask
 );
+
+// GET /api/tasks/:id/history - Get task history
+router.get('/:id/history', taskController.getTaskHistory);
 
 // DELETE /api/tasks/:id - Delete a task
 router.delete('/:id', taskController.deleteTask);

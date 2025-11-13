@@ -32,6 +32,25 @@ class TaskController {
   };
 
   /**
+   * Get tasks organized as Kanban board
+   * GET /api/tasks/kanban
+   */
+  getTasksKanban = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = req.user!.id;
+
+      const kanban = await this.taskService.getTasksKanban(userId);
+
+      res.status(200).json({
+        message: 'Kanban board retrieved successfully',
+        data: kanban,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
    * Create a new task
    * POST /api/tasks
    */
@@ -128,6 +147,31 @@ class TaskController {
       res.status(200).json({
         message: 'Task updated successfully',
         data: task,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Get task history
+   * GET /api/tasks/:id/history
+   */
+  getTaskHistory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = req.user!.id;
+      const taskId = parseInt(req.params.id, 10);
+
+      if (isNaN(taskId)) {
+        res.status(400).json({ error: 'Invalid task ID' });
+        return;
+      }
+
+      const history = await this.taskService.getTaskHistory(userId, taskId);
+
+      res.status(200).json({
+        message: 'Task history retrieved successfully',
+        data: history,
       });
     } catch (error) {
       next(error);
