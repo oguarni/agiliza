@@ -2,6 +2,18 @@
  * Date formatting utilities with i18n support
  */
 
+// Portuguese month names
+const monthNamesPt = [
+  'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+];
+
+// English month names (short)
+const monthNamesEn = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+];
+
 /**
  * Format a date according to the specified locale
  * @param date - The date to format (Date object, ISO string, or null)
@@ -28,6 +40,70 @@ export const formatDate = (date: Date | string | null | undefined, locale: strin
   const day = dateObj.getDate().toString().padStart(2, '0');
   const year = dateObj.getFullYear();
   return `${month}/${day}/${year}`;
+};
+
+/**
+ * Format a date with full month name and time
+ * Portuguese: "10 de Novembro de 2025, 21:00h"
+ * English: "Nov 10, 2025, 09:00 PM"
+ * @param date - The date to format
+ * @param locale - The locale code
+ * @returns Formatted date string with month name and time
+ */
+export const formatDateWithMonthName = (date: Date | string | null | undefined, locale: string = 'en'): string => {
+  if (!date) return '';
+
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+  if (isNaN(dateObj.getTime())) return '';
+
+  const day = dateObj.getDate();
+  const monthIndex = dateObj.getMonth();
+  const year = dateObj.getFullYear();
+  const hours = dateObj.getHours();
+  const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+
+  if (locale === 'pt' || locale === 'pt-BR') {
+    // Portuguese format: "10 de Novembro de 2025, 21:00h"
+    const monthName = monthNamesPt[monthIndex];
+    return `${day} de ${monthName} de ${year}, ${hours}:${minutes}h`;
+  }
+
+  // English format: "Nov 10, 2025, 09:00 PM"
+  const monthName = monthNamesEn[monthIndex];
+  const hour12 = hours % 12 || 12;
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  return `${monthName} ${day}, ${year}, ${hour12.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+};
+
+/**
+ * Format just the date with month name (no time)
+ * Portuguese: "10 de Novembro de 2025"
+ * English: "Nov 10, 2025"
+ * @param date - The date to format
+ * @param locale - The locale code
+ * @returns Formatted date string with month name
+ */
+export const formatDateLong = (date: Date | string | null | undefined, locale: string = 'en'): string => {
+  if (!date) return '';
+
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+  if (isNaN(dateObj.getTime())) return '';
+
+  const day = dateObj.getDate();
+  const monthIndex = dateObj.getMonth();
+  const year = dateObj.getFullYear();
+
+  if (locale === 'pt' || locale === 'pt-BR') {
+    // Portuguese format: "10 de Novembro de 2025"
+    const monthName = monthNamesPt[monthIndex];
+    return `${day} de ${monthName} de ${year}`;
+  }
+
+  // English format: "Nov 10, 2025"
+  const monthName = monthNamesEn[monthIndex];
+  return `${monthName} ${day}, ${year}`;
 };
 
 /**

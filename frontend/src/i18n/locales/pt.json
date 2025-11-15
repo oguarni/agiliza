@@ -71,17 +71,26 @@
     "newProject": "Novo Projeto",
     "editProject": "Editar Projeto",
     "projectName": "Nome do Projeto",
+    "projectTitle": "Título do Projeto",
+    "deadline": "Prazo",
+    "created": "Criado em",
     "noProject": "Sem Projeto",
     "noProjects": "Nenhum projeto encontrado",
     "createSuccess": "Projeto criado com sucesso",
     "updateSuccess": "Projeto atualizado com sucesso",
-    "deleteSuccess": "Projeto excluído com sucesso"
+    "deleteSuccess": "Projeto excluído com sucesso",
+    "deleteConfirm": "Tem certeza que deseja excluir este projeto?",
+    "overdue": "Atrasado",
+    "urgent": "Urgente"
   },
   "kanban": {
     "title": "Quadro Kanban",
     "pending": "A Fazer",
     "inProgress": "Em Progresso",
-    "completed": "Concluído"
+    "completed": "Concluídas",
+    "dragAndDrop": "Arraste e solte as tarefas para alterar o status",
+    "noTasksInColumn": "Nenhuma tarefa nesta coluna",
+    "reopen": "Reabrir"
   },
   "language": {
     "selectLanguage": "Idioma",
