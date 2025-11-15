@@ -19,7 +19,8 @@ i18n
   .use(initReactI18next) // Pass i18n instance to react-i18next
   .init({
     resources,
-    fallbackLng: 'en',
+    lng: 'pt', // Default language: Portuguese-BR
+    fallbackLng: 'pt', // Fallback language: Portuguese-BR
     debug: false,
     interpolation: {
       escapeValue: false, // React already escapes values

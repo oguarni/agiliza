@@ -35,7 +35,7 @@ docker compose up
 - ✅ Task comments and attachments
 - ✅ Task history tracking
 - ✅ Kanban board view
-- ✅ **Internationalization (i18n)** - English/Portuguese language support with dropdown selector
+- ✅ **Internationalization (i18n)** - Portuguese-BR (default) and English support with dropdown selector
 
 ### Technical Highlights
 - ✅ Clean Architecture with SOLID principles
@@ -43,7 +43,7 @@ docker compose up
 - ✅ 100% test coverage in Services layer
 - ✅ Docker Compose with hot-reload
 - ✅ Comprehensive API documentation
-- ✅ Multi-language support (react-i18next)
+- ✅ Multi-language support (react-i18next) - Portuguese-BR default
 
 ## 🛠️ Tech Stack
 
@@ -134,7 +134,7 @@ graph TB
         M[bcrypt Password Hash]
         N[Role-Based Access Control<br/>admin, gestor, colaborador]
         O[File Upload<br/>Multer + 10MB limit]
-        P[i18n Support<br/>English/Portuguese]
+        P[i18n Support<br/>Portuguese-BR (default) / English]
     end
 
     style A fill:#61dafb,stroke:#333,stroke-width:2px,color:#000

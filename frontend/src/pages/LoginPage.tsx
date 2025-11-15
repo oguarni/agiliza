@@ -43,8 +43,8 @@ const LoginPage: React.FC = () => {
             onChange={(e) => i18n.changeLanguage(e.target.value)}
             style={styles.languageSelector}
           >
-            <option value="en">🇬🇧 {t('language.english')}</option>
             <option value="pt">🇧🇷 {t('language.portuguese')}</option>
+            <option value="en">🇬🇧 {t('language.english')}</option>
           </select>
         </div>
         <h1 style={styles.title}>{t('auth.loginTitle')}</h1>
