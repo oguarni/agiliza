@@ -8,8 +8,11 @@ import {
   Project,
   CreateProjectData,
 } from '../services/projectService';
+import { useTranslation } from 'react-i18next';
+import { formatDateLong } from '../utils/dateFormatter';
 
 const ProjectsPage: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -72,7 +75,7 @@ const ProjectsPage: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this project? All associated tasks will also be deleted.')) {
+    if (!window.confirm(t('projects.deleteConfirm') || 'Are you sure you want to delete this project?')) {
       return;
     }
 
@@ -94,8 +97,7 @@ const ProjectsPage: React.FC = () => {
   };
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    return formatDateLong(dateString, i18n.language);
   };
 
   const isOverdue = (deadline: string) => {
@@ -111,9 +113,9 @@ const ProjectsPage: React.FC = () => {
     <Layout>
       <div style={styles.container}>
         <div style={styles.titleBar}>
-          <h2 style={styles.pageTitle}>Projects</h2>
+          <h2 style={styles.pageTitle}>{t('projects.title')}</h2>
           <button onClick={() => setShowForm(!showForm)} style={styles.addButton}>
-            {showForm ? 'Cancel' : 'New Project'}
+            {showForm ? t('common.cancel') : t('projects.newProject')}
           </button>
         </div>
 
@@ -122,47 +124,48 @@ const ProjectsPage: React.FC = () => {
         {/* Create/Edit Form */}
         {showForm && (
           <form onSubmit={handleSubmit} style={styles.form}>
-            <h3>{editingProject ? 'Edit Project' : 'Create New Project'}</h3>
+            <h3>{editingProject ? t('projects.editProject') : t('projects.newProject')}</h3>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>Title *</label>
+              <label style={styles.label}>{t('projects.projectTitle')} *</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 style={styles.input}
-                placeholder="Enter project title"
+                placeholder={t('projects.projectTitle')}
               />
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>Description</label>
+              <label style={styles.label}>{t('tasks.description')}</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 style={{ ...styles.input, minHeight: '80px' }}
-                placeholder="Enter project description (optional)"
+                placeholder={t('tasks.description')}
               />
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>Deadline *</label>
+              <label style={styles.label}>{t('projects.deadline')} *</label>
               <input
                 type="date"
                 value={deadline}
                 onChange={(e) => setDeadline(e.target.value)}
                 required
                 style={styles.input}
+                placeholder={i18n.language === 'pt' ? 'dd/mm/aaaa' : 'mm/dd/yyyy'}
               />
             </div>
 
             <div style={styles.formActions}>
               <button type="submit" style={styles.submitButton}>
-                {editingProject ? 'Update Project' : 'Create Project'}
+                {editingProject ? t('common.update') : t('common.create')}
               </button>
               <button type="button" onClick={resetForm} style={styles.cancelButton}>
-                Cancel
+                {t('common.cancel')}
               </button>
             </div>
           </form>
@@ -170,10 +173,10 @@ const ProjectsPage: React.FC = () => {
 
         {/* Projects List */}
         {loading ? (
-          <p style={styles.loading}>Loading projects...</p>
+          <p style={styles.loading}>{t('common.loading')}</p>
         ) : projects.length === 0 ? (
           <p style={styles.emptyMessage}>
-            No projects yet. Create your first project to get started!
+            {t('projects.noProjects')}
           </p>
         ) : (
           <div style={styles.projectGrid}>
@@ -182,10 +185,10 @@ const ProjectsPage: React.FC = () => {
                 <div style={styles.cardHeader}>
                   <h3 style={styles.projectTitle}>{project.title}</h3>
                   {isOverdue(project.deadline) && (
-                    <span style={styles.overduebadge}>Overdue</span>
+                    <span style={styles.overduebadge}>{t('projects.overdue')}</span>
                   )}
                   {isUrgent(project.deadline) && !isOverdue(project.deadline) && (
-                    <span style={styles.urgentBadge}>Urgent</span>
+                    <span style={styles.urgentBadge}>{t('projects.urgent')}</span>
                   )}
                 </div>
 
@@ -195,19 +198,19 @@ const ProjectsPage: React.FC = () => {
 
                 <div style={styles.projectMeta}>
                   <div style={styles.metaItem}>
-                    <strong>Deadline:</strong> {formatDate(project.deadline)}
+                    <strong>{t('projects.deadline')}:</strong> {formatDate(project.deadline)}
                   </div>
                   <div style={styles.metaItem}>
-                    <strong>Created:</strong> {formatDate(project.created_at)}
+                    <strong>{t('projects.created')}:</strong> {formatDate(project.created_at)}
                   </div>
                 </div>
 
                 <div style={styles.cardActions}>
                   <button onClick={() => handleEdit(project)} style={styles.editButton}>
-                    Edit
+                    {t('common.edit')}
                   </button>
                   <button onClick={() => handleDelete(project.id)} style={styles.deleteButton}>
-                    Delete
+                    {t('common.delete')}
                   </button>
                 </div>
               </div>

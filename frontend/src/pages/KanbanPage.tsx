@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import api from '../services/api';
+import { useTranslation } from 'react-i18next';
+import { formatDateLong } from '../utils/dateFormatter';
 
 interface Task {
   id: number;
@@ -19,6 +21,7 @@ interface KanbanData {
 }
 
 const KanbanPage: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [kanbanData, setKanbanData] = useState<KanbanData>({ pending: [], completed: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -69,9 +72,7 @@ const KanbanPage: React.FC = () => {
   };
 
   const formatDate = (dateString: string | null) => {
-    if (!dateString) return null;
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return formatDateLong(dateString, i18n.language);
   };
 
   const isOverdue = (dueDate: string | null) => {
@@ -130,12 +131,12 @@ const KanbanPage: React.FC = () => {
         <div style={styles.taskActions}>
           {task.status === 'pending' && (
             <button onClick={() => onStatusChange('completed')} style={styles.completeButton}>
-              Mark Complete
+              {t('tasks.markComplete')}
             </button>
           )}
           {task.status === 'completed' && (
             <button onClick={() => onStatusChange('pending')} style={styles.reopenButton}>
-              Reopen
+              {t('kanban.reopen')}
             </button>
           )}
         </div>
@@ -188,7 +189,7 @@ const KanbanPage: React.FC = () => {
 
         <div style={styles.columnContent}>
           {tasks.length === 0 ? (
-            <p style={styles.emptyColumn}>No tasks in this column</p>
+            <p style={styles.emptyColumn}>{t('kanban.noTasksInColumn')}</p>
           ) : (
             tasks.map((task) => (
               <TaskCard
@@ -207,18 +208,18 @@ const KanbanPage: React.FC = () => {
     <Layout>
       <div style={styles.container}>
         <div style={styles.titleBar}>
-          <h2 style={styles.pageTitle}>Kanban Board</h2>
-          <p style={styles.subtitle}>Drag and drop tasks to change their status</p>
+          <h2 style={styles.pageTitle}>{t('kanban.title')}</h2>
+          <p style={styles.subtitle}>{t('kanban.dragAndDrop')}</p>
         </div>
 
         {error && <div style={styles.error}>{error}</div>}
 
         {loading ? (
-          <p style={styles.loading}>Loading kanban board...</p>
+          <p style={styles.loading}>{t('common.loading')}</p>
         ) : (
           <div style={styles.board}>
-            <Column title="To Do" status="pending" tasks={kanbanData.pending} />
-            <Column title="Completed" status="completed" tasks={kanbanData.completed} />
+            <Column title={t('kanban.pending')} status="pending" tasks={kanbanData.pending} />
+            <Column title={t('kanban.completed')} status="completed" tasks={kanbanData.completed} />
           </div>
         )}
       </div>

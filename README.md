@@ -2,12 +2,14 @@
 
 A full-stack task management application implementing Clean Architecture with Role-Based Access Control.
 
+**Repository:** https://github.com/oguarni/status-point.git
+
 ## 🚀 Quick Start (Docker)
 
 ```bash
 # Clone and start
-git clone <repo-url>
-cd Projeto
+git clone https://github.com/oguarni/status-point.git
+cd status-point
 docker compose up
 
 # Access the application
@@ -33,6 +35,7 @@ docker compose up
 - ✅ Task comments and attachments
 - ✅ Task history tracking
 - ✅ Kanban board view
+- ✅ **Internationalization (i18n)** - Portuguese-BR (default) and English support with dropdown selector
 
 ### Technical Highlights
 - ✅ Clean Architecture with SOLID principles
@@ -40,6 +43,7 @@ docker compose up
 - ✅ 100% test coverage in Services layer
 - ✅ Docker Compose with hot-reload
 - ✅ Comprehensive API documentation
+- ✅ Multi-language support (react-i18next) - Portuguese-BR default
 
 ## 🛠️ Tech Stack
 
@@ -84,11 +88,12 @@ This project follows **Clean Architecture** with 4 layers:
 3. **Interface Adapters** - Controllers, repositories, mappers
 4. **Infrastructure** - Framework implementations (Express, Sequelize)
 
-### C4 Diagrams
+### C4 Architecture Diagrams
 
-![System Context](./docs/diagrams/SystemContext.png)
-![Container View](./docs/diagrams/Container.png)
-![Backend Components](./docs/diagrams/Component_Backend.png)
+Detailed architecture diagrams are available:
+- ![System Context](./docs/diagrams/SystemContext.png)
+- ![Container View](./docs/diagrams/Container.png)
+- ![Backend Components](./docs/diagrams/Component_Backend.png)
 
 ## 🧪 Testing
 
@@ -188,6 +193,8 @@ npm run dev
   - ✅ Advanced features (comments, attachments, history)
 
 ## 📄 License
+
+MIT License - see [LICENSE](./LICENSE) file for details.
 
 Educational project for UTFPR Software Engineering course.
 
