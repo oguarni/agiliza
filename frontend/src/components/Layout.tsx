@@ -63,8 +63,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               style={styles.languageSelector}
               title={t('language.selectLanguage')}
             >
-              <option value="en">🇬🇧 {t('language.english')}</option>
               <option value="pt">🇧🇷 {t('language.portuguese')}</option>
+              <option value="en">🇬🇧 {t('language.english')}</option>
             </select>
             <span style={styles.userName}>
               {user?.name} ({t(`roles.${user?.role}`)})
