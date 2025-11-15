@@ -20,8 +20,6 @@
 #   Remove volumes:            docker compose down -v
 # =============================================================================
 
-version: '3.8'
-
 # =============================================================================
 # SERVICES
 # =============================================================================
@@ -64,7 +62,7 @@ services:
       - DB_NAME=task_management_dev          # Your database name
 
       # JWT configuration
-      - JWT_SECRET=S3nh4Muit0F0rt3P4r4M3uJWT!@#$
+      - JWT_SECRET=S3nh4Muit0F0rt3P4r4M3uJWT!@#$$
 
     # Volume mounts
     # CRITICAL for hot-reload: These bind mounts sync host and container files
