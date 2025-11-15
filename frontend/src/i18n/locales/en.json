@@ -71,17 +71,26 @@
     "newProject": "New Project",
     "editProject": "Edit Project",
     "projectName": "Project Name",
+    "projectTitle": "Project Title",
+    "deadline": "Deadline",
+    "created": "Created",
     "noProject": "No Project",
     "noProjects": "No projects found",
     "createSuccess": "Project created successfully",
     "updateSuccess": "Project updated successfully",
-    "deleteSuccess": "Project deleted successfully"
+    "deleteSuccess": "Project deleted successfully",
+    "deleteConfirm": "Are you sure you want to delete this project?",
+    "overdue": "Overdue",
+    "urgent": "Urgent"
   },
   "kanban": {
     "title": "Kanban Board",
     "pending": "To Do",
     "inProgress": "In Progress",
-    "completed": "Done"
+    "completed": "Completed",
+    "dragAndDrop": "Drag and drop tasks to change their status",
+    "noTasksInColumn": "No tasks in this column",
+    "reopen": "Reopen"
   },
   "language": {
     "selectLanguage": "Language",
