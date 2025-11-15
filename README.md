@@ -1,6 +1,10 @@
-# Agiliza
+<div align="center">
+  <img src="frontend/favicon/android-chrome-512x512.png" alt="Agiliza Logo" width="200"/>
 
-Um aplicativo full-stack de gerenciamento de tarefas focado em produtividade, implementando Clean Architecture e Controle de Acesso Baseado em Papel.
+  # Agiliza
+
+  Um aplicativo full-stack de gerenciamento de tarefas focado em produtividade, implementando Clean Architecture e Controle de Acesso Baseado em Papel.
+</div>
 
 **Repositório:** https://github.com/oguarni/status-point.git
 

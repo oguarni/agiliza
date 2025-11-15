@@ -39,7 +39,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Header */}
       <header style={styles.header}>
         <div style={styles.headerContent}>
-          <h1 style={styles.title}>Task Management System</h1>
+          <h1 style={styles.title}>Agiliza</h1>
           <nav style={styles.nav}>
             {navItems.map((item) =>
               canAccessRoute(item.roles) ? (
