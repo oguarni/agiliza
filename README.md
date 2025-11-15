@@ -1,207 +1,144 @@
-# Task Management System
+# Agiliza
 
-A full-stack task management application implementing Clean Architecture with Role-Based Access Control.
+Um aplicativo full-stack de gerenciamento de tarefas focado em produtividade, implementando Clean Architecture e Controle de Acesso Baseado em Papel.
 
-**Repository:** https://github.com/oguarni/status-point.git
+**Repositório:** https://github.com/oguarni/status-point.git
 
-## 🚀 Quick Start (Docker)
+## 📖 Descrição
+
+O Agiliza é uma aplicação web responsiva projetada para auxiliar usuários a organizar, acompanhar e concluir tarefas pessoais ou profissionais de forma simples e eficiente.
+
+A aplicação é composta por um frontend intuitivo (React) e um backend robusto (Node.js + Express + Sequelize), que se comunicam via API REST segura com autenticação JWT.
+
+## ✨ Funcionalidades Principais
+
+- ✅ **Autenticação de Usuário:** Cadastro e login seguros com JWT e criptografia bcrypt.
+- ✅ **Controle de Acesso (RBAC):** Três níveis de permissão: admin, gestor e colaborador.
+- ✅ **Gerenciamento de Tarefas (CRUD):** Criação, leitura, atualização e exclusão de tarefas com autorização baseada no proprietário.
+- ✅ **Gerenciamento de Projetos:** Gestores e admins podem criar projetos para agrupar tarefas.
+- ✅ **Quadro Kanban:** Visualização de tarefas no formato drag-and-drop (A Fazer, Concluídas).
+- ✅ **Recursos Avançados de Tarefa:**
+  - **Comentários:** Adicione discussões a tarefas.
+  - **Anexos:** Faça upload e download de arquivos (imagens, documentos, etc.).
+  - **Histórico:** Rastreamento automático de mudanças de status.
+- ✅ **Internacionalização (i18n):** Suporte completo para Português-BR (padrão) e Inglês.
+
+## 🛠️ Stack de Tecnologias
+
+| Camada | Tecnologia |
+|--------|------------|
+| **Backend** | Node.js, Express, TypeScript, PostgreSQL, Sequelize, JWT |
+| **Frontend** | React 18, TypeScript, Vite, React Router v6, Axios |
+| **Testes** | Jest, Supertest (100% de cobertura na camada de serviço) |
+| **DevOps** | Docker, Docker Compose (com hot-reload) |
+
+## 🏗️ Arquitetura
+
+O projeto segue os princípios da **Clean Architecture**, garantindo a separação de responsabilidades, testabilidade e independência de frameworks. A lógica de negócio é isolada em **Domain Entities** e **Use Cases**, sem depender de detalhes de infraestrutura como o banco de dados ou a API web.
+
+### Diagramas C4
+
+- **Nível 1:** Contexto do Sistema
+- **Nível 2:** Visão de Contêineres
+- **Nível 3:** Componentes do Backend
+
+## 🚀 Como Executar (Docker)
+
+O método recomendado para execução é usando Docker Compose, que configura o frontend, o backend e o banco de dados automaticamente.
+
+**Pré-requisitos:**
+- Git
+- Docker e Docker Compose
 
 ```bash
-# Clone and start
+# 1. Clone o repositório
 git clone https://github.com/oguarni/status-point.git
 cd status-point
-docker compose up
 
-# Access the application
-# Frontend: http://localhost:3000
-# Backend API: http://localhost:3001
+# 2. Inicie os contêineres
+# (O backend se conectará ao banco no host via host.docker.internal)
+# (Certifique-se que seu .env no backend está correto)
+docker compose up
 ```
 
-### Test Accounts
+**Acesse a aplicação:**
+- **Frontend:** http://localhost:3000
+- **Backend API:** http://localhost:3001
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@taskmanager.com | admin123 |
-| Manager | gestor@taskmanager.com | gestor123 |
-| Developer | colaborador@taskmanager.com | colaborador123 |
+### Contas de Teste
 
-## 📋 Features
+Você pode usar as contas abaixo para testar os diferentes níveis de permissão:
 
-### Core Functionality
-- ✅ User authentication (JWT + bcrypt)
-- ✅ Role-based access control (admin, gestor, colaborador)
-- ✅ Task CRUD operations with authorization
-- ✅ Project management
-- ✅ Task comments and attachments
-- ✅ Task history tracking
-- ✅ Kanban board view
-- ✅ **Internationalization (i18n)** - Portuguese-BR (default) and English support with dropdown selector
+| Papel | E-mail | Senha |
+|-------|--------|-------|
+| **Admin** | admin@taskmanager.com | admin123 |
+| **Gestor** | gestor@taskmanager.com | gestor123 |
+| **Colaborador** | colaborador@taskmanager.com | colaborador123 |
 
-### Technical Highlights
-- ✅ Clean Architecture with SOLID principles
-- ✅ Domain-Driven Design patterns
-- ✅ 100% test coverage in Services layer
-- ✅ Docker Compose with hot-reload
-- ✅ Comprehensive API documentation
-- ✅ Multi-language support (react-i18next) - Portuguese-BR default
-
-## 🛠️ Tech Stack
-
-**Backend:** Node.js, Express, TypeScript, PostgreSQL, Sequelize
-**Frontend:** React 18, TypeScript, Vite, React Router v6
-**DevOps:** Docker, Docker Compose
-**Testing:** Jest, Supertest
-
-## 📁 Project Structure
+## 📁 Estrutura do Projeto
 
 ```
 .
-├── backend/              # Node.js + Express API
+├── backend/              # API em Node.js + Express (Clean Architecture)
 │   ├── src/
-│   │   ├── domain/      # Business entities
-│   │   ├── usecases/    # Application logic
-│   │   ├── services/    # Business logic (100% coverage)
-│   │   ├── repositories/# Data access layer
-│   │   ├── controllers/ # API endpoints
-│   │   ├── mappers/     # ORM ↔ Domain conversion
-│   │   └── models/      # Sequelize ORM
-│   └── scripts/         # Database seeding & testing
+│   │   ├── domain/       # Entidades de negócio (Ex: Task, User, Project)
+│   │   ├── usecases/     # Lógica de aplicação (Ex: CreateTaskUseCase)
+│   │   ├── services/     # Lógica de negócio e autorização
+│   │   ├── repositories/ # Camada de acesso a dados (Abstração)
+│   │   ├── controllers/  # Endpoints da API (HTTP)
+│   │   ├── mappers/      # Conversores ORM <-> Domain
+│   │   ├── models/       # Modelos do Sequelize (ORM)
+│   │   └── migrations/   # Migrações do banco
+│   └── Dockerfile
 │
-├── frontend/            # React SPA
-│   └── src/
-│       ├── pages/       # Page components
-│       ├── components/  # Reusable components
-│       ├── contexts/    # React contexts
-│       └── services/    # API clients
+├── frontend/             # Aplicação SPA em React
+│   ├── src/
+│   │   ├── pages/        # Componentes de página (Ex: TasksPage)
+│   │   ├── components/   # Componentes reutilizáveis (Ex: Layout)
+│   │   ├── contexts/     # Contexto (Ex: AuthContext)
+│   │   ├── services/     # Clientes de API (Axios)
+│   │   └── i18n/         # Arquivos de internacionalização
+│   └── Dockerfile
 │
-├── docs/                # Architecture diagrams (C4)
-├── docker-compose.yml   # Docker orchestration
-└── CLAUDE.md           # Comprehensive developer guide
+├── docs/                 # Diagramas de arquitetura (C4)
+├── docker-compose.yml    # Orquestração do Docker
+└── CLAUDE.md             # Guia técnico detalhado para desenvolvedores
 ```
 
-## 🏗️ Architecture
+## 🧪 Testes (Backend)
 
-This project follows **Clean Architecture** with 4 layers:
-
-1. **Domain Layer** - Pure business entities (Task, User, Project)
-2. **Use Cases Layer** - Application-specific business rules
-3. **Interface Adapters** - Controllers, repositories, mappers
-4. **Infrastructure** - Framework implementations (Express, Sequelize)
-
-### C4 Architecture Diagrams
-
-Detailed architecture diagrams are available:
-- ![System Context](./docs/diagrams/SystemContext.png)
-- ![Container View](./docs/diagrams/Container.png)
-- ![Backend Components](./docs/diagrams/Component_Backend.png)
-
-## 🧪 Testing
+O backend possui **100% de cobertura de testes** na camada de serviços.
 
 ```bash
+# Navegue até o diretório do backend
 cd backend
 
-# Run all tests
+# 1. Instale as dependências (se ainda não o fez)
+npm install
+
+# 2. Execute todos os testes
 npm test
 
-# Watch mode
+# 3. Execute testes em modo 'watch'
 npm run test:watch
 
-# Coverage report
+# 4. Gere um relatório de cobertura
 npm run test:coverage
 ```
 
-**Current Coverage:** 100% in Services layer
+## 🎓 Contexto Acadêmico
 
-## 📚 API Endpoints
+Este projeto foi desenvolvido como trabalho da disciplina de **Arquitetura de Software (AS27S)**, da turma **7ES1**, ofertada pelo Curso de Engenharia de Software da **Universidade Tecnológica Federal do Paraná (UTFPR)**, campus Dois Vizinhos.
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login
+**Orientação:** Profª. Dr. Francisco Carlos.
 
-### Tasks (Protected)
-- `GET /api/tasks` - List user's tasks
-- `POST /api/tasks` - Create task
-- `PUT /api/tasks/:id` - Update task
-- `PATCH /api/tasks/:id/complete` - Mark complete
-- `DELETE /api/tasks/:id` - Delete task
+O objetivo principal foi aplicar na prática os conceitos de **Clean Architecture**, **SOLID**, **Domain-Driven Design (DDD)** e **Controle de Acesso Baseado em Papel (RBAC)**.
 
-### Projects (Protected)
-- `GET /api/projects` - List projects
-- `POST /api/projects` - Create project (admin/gestor only)
-- `PUT /api/projects/:id` - Update project
-- `DELETE /api/projects/:id` - Delete project
+### Autores
 
-*Full API documentation in [CLAUDE.md](./CLAUDE.md#api-endpoints)*
+- Aurélio Antonio Brites de Miranda
+- Gabriel Felipe Guarnieri
 
-## ⚙️ Manual Setup (Without Docker)
+## 📄 Licença
 
-<details>
-<summary>Click to expand manual setup instructions</summary>
-
-### Prerequisites
-- Node.js v18+
-- PostgreSQL v12+
-
-### Backend
-
-```bash
-cd backend
-npm install
-
-# Create database
-psql -U postgres -c "CREATE DATABASE task_management_dev;"
-
-# Configure .env
-cp .env.example .env
-# Edit .env with your database credentials
-
-# Run migrations
-npm run db:migrate
-
-# Start server
-npm run dev
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-</details>
-
-## 📖 Documentation
-
-- **[CLAUDE.md](./CLAUDE.md)** - Comprehensive guide for developers and AI assistants
-  - Detailed architecture explanations
-  - Code patterns and conventions
-  - Testing strategies
-  - Common tasks and workflows
-
-## 🎓 Academic Context
-
-- **Course:** Software Engineering, 7th semester
-- **Institution:** UTFPR (Federal University of Technology - Paraná)
-- **Purpose:** Demonstrate Clean Architecture implementation
-- **Achievements:**
-  - ✅ 10+ functional requirements (5 minimum required)
-  - ✅ Clean Architecture with SOLID
-  - ✅ 100% service layer test coverage
-  - ✅ Role-Based Access Control
-  - ✅ Advanced features (comments, attachments, history)
-
-## 📄 License
-
-MIT License - see [LICENSE](./LICENSE) file for details.
-
-Educational project for UTFPR Software Engineering course.
-
-## 👤 Author
-
-7th-semester Software Engineering student, UTFPR
-
----
-
-**Need more details?** Check [CLAUDE.md](./CLAUDE.md) for comprehensive documentation.
+Este projeto é distribuído sob a licença **MIT**. Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
