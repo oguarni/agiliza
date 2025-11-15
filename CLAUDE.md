@@ -1,8 +1,8 @@
-Title: CLAUDE.md - Project Status Point
-Path: oguarni/status-point/status-point-claude-add-dropdown-selector-01PXaZrGrw6s5c4LqckowLLH/CLAUDE.md
+Title: CLAUDE.md - Project Agiliza
+Path: oguarni/status-point/CLAUDE.md
 # CLAUDE.md - AI Assistant Guide
 
-> **Purpose**: This document provides AI context for the `status-point` codebase. This is an academic project demonstrating Clean Architecture.
+> **Purpose**: This document provides AI context for the `Agiliza` codebase (repository: status-point). This is an academic project demonstrating Clean Architecture.
 > **Status**: MVP is complete. Focus is on maintenance, refactoring, and new features.
 
 ---
