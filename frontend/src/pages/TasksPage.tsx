@@ -3,6 +3,8 @@ import Layout from '../components/Layout';
 import TaskDetailsModal from '../components/TaskDetailsModal';
 import api from '../services/api';
 import { getProjects, Project } from '../services/projectService';
+import { useTranslation } from 'react-i18next';
+import { formatDate as formatDateLocale } from '../utils/dateFormatter';
 
 // Task interface
 interface Task {
@@ -17,6 +19,7 @@ interface Task {
 }
 
 const TasksPage: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -105,7 +108,7 @@ const TasksPage: React.FC = () => {
   };
 
   const handleDeleteTask = async (taskId: number) => {
-    if (!window.confirm('Are you sure you want to delete this task?')) {
+    if (!window.confirm(t('tasks.deleteConfirm') || 'Are you sure you want to delete this task?')) {
       return;
     }
 
@@ -148,9 +151,8 @@ const TasksPage: React.FC = () => {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  const formatDate = (dateString: string | null) => {
+    return formatDateLocale(dateString, i18n.language);
   };
 
   const getProjectName = (projectId: number | null) => {
@@ -163,9 +165,9 @@ const TasksPage: React.FC = () => {
     <Layout>
       <div style={styles.container}>
         <div style={styles.titleBar}>
-          <h2 style={styles.pageTitle}>My Tasks</h2>
+          <h2 style={styles.pageTitle}>{t('tasks.title')}</h2>
           <button onClick={() => setShowForm(!showForm)} style={styles.addButton}>
-            {showForm ? 'Cancel' : 'New Task'}
+            {showForm ? t('common.cancel') : t('tasks.newTask')}
           </button>
         </div>
 
@@ -174,63 +176,64 @@ const TasksPage: React.FC = () => {
         {/* Create task form */}
         {showForm && (
           <form onSubmit={handleCreateTask} style={styles.form}>
-            <h3>Create New Task</h3>
+            <h3>{t('tasks.newTask')}</h3>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>Title *</label>
+              <label style={styles.label}>{t('tasks.taskTitle')} *</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 style={styles.input}
-                placeholder="Enter task title"
+                placeholder={t('tasks.taskTitle')}
               />
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>Description</label>
+              <label style={styles.label}>{t('tasks.description')}</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 style={{ ...styles.input, minHeight: '80px' }}
-                placeholder="Enter task description (optional)"
+                placeholder={t('tasks.description')}
               />
             </div>
 
             <div style={styles.formRow}>
               <div style={styles.formGroup}>
-                <label style={styles.label}>Priority</label>
+                <label style={styles.label}>{t('tasks.priority')}</label>
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value as 'low' | 'medium' | 'high')}
                   style={styles.input}
                 >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
+                  <option value="low">{t('priority.low')}</option>
+                  <option value="medium">{t('priority.medium')}</option>
+                  <option value="high">{t('priority.high')}</option>
                 </select>
               </div>
 
               <div style={styles.formGroup}>
-                <label style={styles.label}>Due Date</label>
+                <label style={styles.label}>{t('tasks.dueDate')}</label>
                 <input
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
                   style={styles.input}
+                  placeholder={i18n.language === 'pt' ? 'dd/mm/aaaa' : 'mm/dd/yyyy'}
                 />
               </div>
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>Project (optional)</label>
+              <label style={styles.label}>{t('tasks.project')}</label>
               <select
                 value={projectId || ''}
                 onChange={(e) => setProjectId(e.target.value ? parseInt(e.target.value) : null)}
                 style={styles.input}
               >
-                <option value="">No Project</option>
+                <option value="">{t('projects.noProject') || 'No Project'}</option>
                 {projects.map((project) => (
                   <option key={project.id} value={project.id}>
                     {project.title}
@@ -240,16 +243,16 @@ const TasksPage: React.FC = () => {
             </div>
 
             <button type="submit" style={styles.submitButton}>
-              Create Task
+              {t('tasks.newTask')}
             </button>
           </form>
         )}
 
         {/* Tasks list */}
         {loading ? (
-          <p style={styles.loading}>Loading tasks...</p>
+          <p style={styles.loading}>{t('common.loading')}</p>
         ) : tasks.length === 0 ? (
-          <p style={styles.emptyMessage}>No tasks yet. Create your first task!</p>
+          <p style={styles.emptyMessage}>{t('tasks.noTasks')}</p>
         ) : (
           <div style={styles.taskGrid}>
             {tasks.map((task) => (
@@ -262,7 +265,9 @@ const TasksPage: React.FC = () => {
                   <h3 style={task.status === 'completed' ? styles.completedTitle : styles.taskTitle}>
                     {task.title}
                   </h3>
-                  <span style={getPriorityStyle(task.priority)}>{task.priority || 'none'}</span>
+                  <span style={getPriorityStyle(task.priority)}>
+                    {task.priority ? t(`priority.${task.priority}`) : 'none'}
+                  </span>
                 </div>
 
                 {task.description && <p style={styles.description}>{task.description}</p>}
@@ -274,10 +279,10 @@ const TasksPage: React.FC = () => {
                 <div style={styles.taskFooter}>
                   <div style={styles.taskInfo}>
                     <span style={styles.status}>
-                      Status: <strong>{task.status}</strong>
+                      {t('tasks.status')}: <strong>{t(`status.${task.status}`)}</strong>
                     </span>
                     {task.dueDate && (
-                      <span style={styles.dueDate}>Due: {formatDate(task.dueDate)}</span>
+                      <span style={styles.dueDate}>{t('tasks.dueDate')}: {formatDate(task.dueDate)}</span>
                     )}
                   </div>
 
@@ -287,11 +292,11 @@ const TasksPage: React.FC = () => {
                         onClick={() => handleCompleteTask(task.id)}
                         style={styles.completeButton}
                       >
-                        Complete
+                        {t('tasks.markComplete')}
                       </button>
                     )}
                     <button onClick={() => handleDeleteTask(task.id)} style={styles.deleteButton}>
-                      Delete
+                      {t('common.delete')}
                     </button>
                   </div>
                 </div>
