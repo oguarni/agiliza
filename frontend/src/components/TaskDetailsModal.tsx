@@ -404,19 +404,19 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     flexDirection: 'column',
     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
-    border: '2px solid #533483',
+    border: '2px solid #1976D2',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '1.5rem',
-    borderBottom: '2px solid #533483',
+    borderBottom: '2px solid #1976D2',
   },
   title: {
     margin: 0,
     fontSize: '1.5rem',
-    color: '#e94560',
+    color: '#2196F3',
     fontWeight: '700',
   },
   closeButton: {
@@ -434,13 +434,13 @@ const styles: { [key: string]: React.CSSProperties } = {
   error: {
     margin: '1rem 1.5rem 0',
     padding: '1rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#d32f2f',
     color: '#ffffff',
     borderRadius: '6px',
   },
   tabs: {
     display: 'flex',
-    borderBottom: '2px solid #533483',
+    borderBottom: '2px solid #1976D2',
     padding: '0 1.5rem',
   },
   tab: {
@@ -455,8 +455,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     transition: 'all 0.3s',
   },
   tabActive: {
-    color: '#e94560',
-    borderBottomColor: '#e94560',
+    color: '#2196F3',
+    borderBottomColor: '#2196F3',
   },
   content: {
     padding: '1.5rem',
@@ -472,13 +472,13 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   badge: {
     padding: '0.25rem 0.75rem',
-    backgroundColor: '#533483',
+    backgroundColor: '#1565C0',
     borderRadius: '6px',
     fontSize: '0.875rem',
     fontWeight: '600',
     textTransform: 'capitalize',
-    color: '#e94560',
-    border: '1px solid #e94560',
+    color: '#64B5F6',
+    border: '1px solid #2196F3',
   },
   description: {
     margin: '0.5rem 0 0 0',
@@ -491,7 +491,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   commentInput: {
     width: '100%',
     padding: '0.75rem',
-    border: '2px solid #533483',
+    border: '2px solid #1976D2',
     borderRadius: '6px',
     fontSize: '1rem',
     marginBottom: '0.5rem',
@@ -502,7 +502,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   submitButton: {
     padding: '0.5rem 1.5rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#2196F3',
     color: 'white',
     border: 'none',
     borderRadius: '6px',
@@ -525,8 +525,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '1rem',
     backgroundColor: '#1a1a2e',
     borderRadius: '6px',
-    borderLeft: '3px solid #e94560',
-    border: '1px solid #533483',
+    borderLeft: '3px solid #2196F3',
+    border: '1px solid #1976D2',
   },
   commentContent: {
     margin: '0 0 0.5rem 0',
@@ -549,8 +549,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   editButton: {
     padding: '0.25rem 0.75rem',
     backgroundColor: 'transparent',
-    color: '#e94560',
-    border: '1px solid #e94560',
+    color: '#2196F3',
+    border: '1px solid #2196F3',
     borderRadius: '6px',
     cursor: 'pointer',
     fontSize: '0.75rem',
@@ -560,8 +560,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   deleteButton: {
     padding: '0.25rem 0.75rem',
     backgroundColor: 'transparent',
-    color: '#e94560',
-    border: '1px solid #e94560',
+    color: '#d32f2f',
+    border: '1px solid #d32f2f',
     borderRadius: '6px',
     cursor: 'pointer',
     fontSize: '0.75rem',
@@ -570,9 +570,9 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   saveButton: {
     padding: '0.25rem 0.75rem',
-    backgroundColor: '#533483',
+    backgroundColor: '#1565C0',
     color: 'white',
-    border: '1px solid #e94560',
+    border: '1px solid #2196F3',
     borderRadius: '6px',
     cursor: 'pointer',
     fontSize: '0.75rem',
@@ -583,7 +583,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '0.25rem 0.75rem',
     backgroundColor: '#1a1a2e',
     color: 'white',
-    border: '1px solid #533483',
+    border: '1px solid #1976D2',
     borderRadius: '6px',
     cursor: 'pointer',
     fontSize: '0.75rem',
@@ -599,12 +599,12 @@ const styles: { [key: string]: React.CSSProperties } = {
   uploadButton: {
     display: 'inline-block',
     padding: '0.75rem 1.5rem',
-    backgroundColor: '#533483',
+    backgroundColor: '#1565C0',
     color: 'white',
     borderRadius: '6px',
     cursor: 'pointer',
     fontWeight: '600',
-    border: '1px solid #e94560',
+    border: '1px solid #2196F3',
     transition: 'background-color 0.3s',
   },
   attachmentsList: {
@@ -619,7 +619,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '1rem',
     backgroundColor: '#1a1a2e',
     borderRadius: '6px',
-    border: '1px solid #533483',
+    border: '1px solid #1976D2',
   },
   attachmentInfo: {
     display: 'flex',
@@ -647,7 +647,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   downloadButton: {
     padding: '0.5rem 1rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#2196F3',
     color: 'white',
     border: 'none',
     borderRadius: '6px',
