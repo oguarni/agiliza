@@ -235,11 +235,11 @@ const styles: { [key: string]: React.CSSProperties } = {
   pageTitle: {
     margin: 0,
     fontSize: '2rem',
-    color: '#e94560',
+    color: '#2196F3',
   },
   addButton: {
     padding: '0.75rem 1.5rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#2196F3',
     color: 'white',
     border: 'none',
     borderRadius: '6px',
@@ -250,7 +250,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   error: {
     padding: '1rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#d32f2f',
     color: '#ffffff',
     borderRadius: '6px',
     marginBottom: '1rem',
@@ -274,7 +274,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '8px',
     marginBottom: '2rem',
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-    border: '1px solid #533483',
+    border: '1px solid #1976D2',
   },
   formGroup: {
     marginBottom: '1.5rem',
@@ -288,7 +288,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   input: {
     width: '100%',
     padding: '0.75rem',
-    border: '2px solid #533483',
+    border: '2px solid #1976D2',
     borderRadius: '6px',
     fontSize: '1rem',
     boxSizing: 'border-box',
@@ -301,7 +301,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   submitButton: {
     padding: '0.75rem 2rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#2196F3',
     color: 'white',
     border: 'none',
     borderRadius: '6px',
@@ -312,9 +312,9 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   cancelButton: {
     padding: '0.75rem 2rem',
-    backgroundColor: '#533483',
+    backgroundColor: '#1565C0',
     color: 'white',
-    border: '1px solid #e94560',
+    border: '1px solid #2196F3',
     borderRadius: '6px',
     cursor: 'pointer',
     fontWeight: '600',
@@ -332,7 +332,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '8px',
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
     transition: 'transform 0.2s, box-shadow 0.2s',
-    border: '1px solid #533483',
+    border: '1px solid #1976D2',
   },
   cardHeader: {
     display: 'flex',
@@ -349,7 +349,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   overdueBadge: {
     padding: '0.25rem 0.75rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#d32f2f',
     color: 'white',
     borderRadius: '12px',
     fontSize: '0.75rem',
@@ -376,7 +376,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '0.5rem',
     marginBottom: '1rem',
     paddingTop: '1rem',
-    borderTop: '1px solid #533483',
+    borderTop: '1px solid #1976D2',
   },
   metaItem: {
     fontSize: '0.9rem',
@@ -386,14 +386,14 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     gap: '0.5rem',
     paddingTop: '1rem',
-    borderTop: '1px solid #533483',
+    borderTop: '1px solid #1976D2',
   },
   editButton: {
     flex: 1,
     padding: '0.5rem',
-    backgroundColor: '#533483',
+    backgroundColor: '#1565C0',
     color: 'white',
-    border: '1px solid #e94560',
+    border: '1px solid #2196F3',
     borderRadius: '6px',
     cursor: 'pointer',
     fontWeight: '600',
@@ -402,7 +402,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   deleteButton: {
     flex: 1,
     padding: '0.5rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#d32f2f',
     color: 'white',
     border: 'none',
     borderRadius: '6px',

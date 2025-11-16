@@ -94,7 +94,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     backgroundColor: '#0f3460',
     color: 'white',
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-    borderBottom: '2px solid #533483',
+    borderBottom: '2px solid #1976D2',
   },
   headerContent: {
     maxWidth: '1400px',
@@ -114,13 +114,13 @@ const styles: { [key: string]: React.CSSProperties } = {
   logo: {
     width: '40px',
     height: '40px',
-    filter: 'drop-shadow(0 2px 4px rgba(233, 69, 96, 0.3))',
+    filter: 'drop-shadow(0 2px 4px rgba(33, 150, 243, 0.4))',
   },
   title: {
     margin: 0,
     fontSize: '1.5rem',
     fontWeight: '700',
-    color: '#e94560',
+    color: '#2196F3',
   },
   nav: {
     display: 'flex',
@@ -139,8 +139,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     transition: 'all 0.3s',
   },
   navButtonActive: {
-    backgroundColor: '#533483',
-    borderColor: '#e94560',
+    backgroundColor: '#1565C0',
+    borderColor: '#2196F3',
     color: '#ffffff',
   },
   userSection: {
@@ -151,8 +151,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   languageSelector: {
     padding: '0.5rem',
     backgroundColor: '#1a1a2e',
-    color: '#e94560',
-    border: '2px solid #533483',
+    color: '#2196F3',
+    border: '2px solid #1976D2',
     borderRadius: '6px',
     cursor: 'pointer',
     fontSize: '0.9rem',
@@ -165,7 +165,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   logoutButton: {
     padding: '0.5rem 1rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#2196F3',
     color: 'white',
     border: 'none',
     borderRadius: '6px',

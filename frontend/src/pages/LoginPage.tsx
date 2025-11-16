@@ -112,7 +112,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   title: {
     textAlign: 'center',
     marginBottom: '1.5rem',
-    color: '#e94560',
+    color: '#2196F3',
     fontSize: '1.8rem',
     fontWeight: '700',
   },
@@ -132,7 +132,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   input: {
     width: '100%',
     padding: '0.75rem',
-    border: '2px solid #533483',
+    border: '2px solid #1976D2',
     borderRadius: '6px',
     fontSize: '1rem',
     boxSizing: 'border-box',
@@ -142,7 +142,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   button: {
     padding: '0.85rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#2196F3',
     color: 'white',
     border: 'none',
     borderRadius: '6px',
@@ -154,7 +154,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   error: {
     padding: '0.75rem',
-    backgroundColor: '#e94560',
+    backgroundColor: '#d32f2f',
     color: '#ffffff',
     borderRadius: '6px',
     marginBottom: '1rem',
@@ -171,7 +171,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   languageSelector: {
     padding: '0.5rem',
-    border: '2px solid #533483',
+    border: '2px solid #1976D2',
     borderRadius: '6px',
     cursor: 'pointer',
     fontSize: '0.9rem',
