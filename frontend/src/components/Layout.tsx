@@ -39,7 +39,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Header */}
       <header style={styles.header}>
         <div style={styles.headerContent}>
-          <h1 style={styles.title}>Task Management System</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <img src="/favicon-32x32.png" alt="Agiliza Logo" style={{ width: '32px', height: '32px' }} />
+            <h1 style={styles.title}>Agiliza</h1>
+          </div>
           <nav style={styles.nav}>
             {navItems.map((item) =>
               canAccessRoute(item.roles) ? (

@@ -49,7 +49,6 @@ const LoginPage: React.FC = () => {
         </div>
         <div style={styles.logoContainer}>
           <img src="/android-chrome-512x512.png" alt="Agiliza" style={styles.logo} />
-          <h1 style={styles.logoText}>Agiliza</h1>
         </div>
         <h2 style={styles.title}>{t('auth.loginTitle')}</h2>
         <form onSubmit={handleSubmit} style={styles.form}>
@@ -114,18 +113,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '0.75rem',
     marginBottom: '2rem',
   },
   logo: {
     width: '80px',
     height: '80px',
-  },
-  logoText: {
-    margin: 0,
-    fontSize: '1.75rem',
-    fontWeight: '600',
-    color: '#E5E5E5',
   },
   title: {
     textAlign: 'center',
