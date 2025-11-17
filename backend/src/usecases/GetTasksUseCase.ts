@@ -1,3 +1,4 @@
+import { injectable, inject } from 'inversify';
 import { ITaskRepository, PaginationOptions, PaginatedResult } from '../interfaces/ITaskRepository';
 import { ILogger } from '../utils/logger';
 import { Task } from '../domain/entities/Task';
@@ -6,10 +7,11 @@ import { Task } from '../domain/entities/Task';
  * Use case for retrieving tasks
  * Encapsulates business logic for task retrieval
  */
+@injectable()
 export class GetTasksUseCase {
   constructor(
-    private taskRepository: ITaskRepository,
-    private logger: ILogger
+    @inject('TaskRepository') private taskRepository: ITaskRepository,
+    @inject('Logger') private logger: ILogger
   ) {}
 
   /**

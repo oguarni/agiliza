@@ -1,16 +1,13 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
+import { container } from '../container';
 import TaskController from '../controllers/TaskController';
-import TaskService from '../services/TaskService';
-import TaskRepository from '../repositories/TaskRepository';
 import authMiddleware from '../middlewares/authMiddleware';
 
 const router = Router();
 
-// Initialize dependencies
-const taskRepository = new TaskRepository();
-const taskService = new TaskService(taskRepository);
-const taskController = new TaskController(taskService);
+// Resolve controller from DI container
+const taskController = container.get<TaskController>('TaskController');
 
 // All routes are protected by authMiddleware
 router.use(authMiddleware);

@@ -1,3 +1,4 @@
+import { injectable, inject } from 'inversify';
 import { ITaskRepository, UpdateTaskDTO } from '../interfaces/ITaskRepository';
 import { ILogger } from '../utils/logger';
 import { Task } from '../domain/entities/Task';
@@ -8,10 +9,11 @@ import { AuthorizationError, UserNotFoundError } from '../errors';
  * Use case for updating an existing task
  * Encapsulates business logic for task updates
  */
+@injectable()
 export class UpdateTaskUseCase {
   constructor(
-    private taskRepository: ITaskRepository,
-    private logger: ILogger
+    @inject('TaskRepository') private taskRepository: ITaskRepository,
+    @inject('Logger') private logger: ILogger
   ) {}
 
   /**

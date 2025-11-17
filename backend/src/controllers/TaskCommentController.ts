@@ -1,11 +1,13 @@
+import { injectable, inject } from 'inversify';
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import TaskCommentService from '../services/TaskCommentService';
 
+@injectable()
 class TaskCommentController {
   private taskCommentService: TaskCommentService;
 
-  constructor(taskCommentService: TaskCommentService) {
+  constructor(@inject('TaskCommentService') taskCommentService: TaskCommentService) {
     this.taskCommentService = taskCommentService;
   }
 

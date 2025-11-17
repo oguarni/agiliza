@@ -1,8 +1,10 @@
+import { injectable } from 'inversify';
 import { TaskAttachment as TaskAttachmentModel } from '../models';
 import { TaskAttachment } from '../domain/entities/TaskAttachment';
 import { TaskAttachmentMapper } from '../mappers/TaskAttachmentMapper';
 import { CreateTaskAttachmentDTO } from '../interfaces/ITaskAttachmentRepository';
 
+@injectable()
 class TaskAttachmentRepository {
   async findById(id: number): Promise<TaskAttachment | null> {
     try {

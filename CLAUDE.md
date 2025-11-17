@@ -12,7 +12,7 @@ Path: oguarni/status-point/status-point-claude-add-dropdown-selector-01PXaZrGrw6
 * **Domain**: A full-stack Task Management System (like Trello/Jira).
 * **Key Features**: User Auth (JWT), Role-Based Access Control (RBAC), Project Management, Tasks, Comments, File Attachments, Task History.
 * **Tech Stack**:
-    * **Backend**: TypeScript, Node.js, Express, PostgreSQL, Sequelize, `tsyringe` (DI), express-validator (Validation), Jest.
+    * **Backend**: TypeScript, Node.js, Express, PostgreSQL, Sequelize, `inversify` (DI), express-validator (Validation), Jest.
     * **Frontend**: React, TypeScript, Vite, TailwindCSS, React Router, Axios.
     * **DevOps**: Docker, Docker Compose.
 
@@ -32,11 +32,11 @@ This project **strictly** follows **Clean Architecture**, **SOLID**, and **DDD**
     * **Repositories (`repositories/`)**: Implements repository interfaces using Sequelize.
     * **Models (`models/`)**: Sequelize ORM models. **NEVER** use these in Services.
     * **Mappers (`mappers/`)**: Converts between Domain Entities and ORM Models.
-    * **Container (`container/`)**: `tsyringe` DI registration.
+    * **Container (`container/`)**: `inversify` DI registration.
 
 ### Key Patterns & Rules
 
-* **DI**: Use `tsyringe`. Register services/repositories in `backend/src/container/index.ts`.
+* **DI**: Use `inversify`. Register services/repositories in `backend/src/container/index.ts`.
 * **Data Flow**: Route → Controller → Validator → Service → IRepository → RepositoryImpl → Mapper → ORM Model → DB.
 * **Validation**: Use `express-validator` validation chains in route files (`backend/src/routes/`). Validation occurs in the **route layer** before controllers.
 * **Error Handling**: Services **must throw** custom errors (from `backend/src/errors/`). The `errorHandler.ts` middleware formats the JSON response.

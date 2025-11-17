@@ -1,10 +1,12 @@
+import { injectable, inject } from 'inversify';
 import { Request, Response, NextFunction } from 'express';
 import TaskAttachmentService from '../services/TaskAttachmentService';
 
+@injectable()
 class TaskAttachmentController {
   private taskAttachmentService: TaskAttachmentService;
 
-  constructor(taskAttachmentService: TaskAttachmentService) {
+  constructor(@inject('TaskAttachmentService') taskAttachmentService: TaskAttachmentService) {
     this.taskAttachmentService = taskAttachmentService;
   }
 

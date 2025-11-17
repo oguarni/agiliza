@@ -1,3 +1,4 @@
+import { injectable, inject } from 'inversify';
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import ProjectService from '../services/ProjectService';
@@ -5,10 +6,11 @@ import ProjectService from '../services/ProjectService';
 /**
  * ProjectController class - API Layer
  */
+@injectable()
 class ProjectController {
   private projectService: ProjectService;
 
-  constructor(projectService: ProjectService) {
+  constructor(@inject('ProjectService') projectService: ProjectService) {
     this.projectService = projectService;
   }
 

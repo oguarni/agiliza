@@ -1,9 +1,11 @@
+import { injectable } from 'inversify';
 import { User as UserModel } from '../models';
 import { User } from '../domain/entities/User';
 import { UserMapper } from '../mappers/UserMapper';
 import { CreateUserDTO } from '../interfaces/IUserRepository';
 
 // UserRepository class - Data Access Layer
+@injectable()
 class UserRepository {
   /**
    * Find a user by email

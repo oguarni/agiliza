@@ -1,12 +1,14 @@
+import { injectable, inject } from 'inversify';
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import AuthService from '../services/AuthService';
 
 // AuthController class - API Layer
+@injectable()
 class AuthController {
   private authService: AuthService;
 
-  constructor(authService: AuthService) {
+  constructor(@inject('AuthService') authService: AuthService) {
     this.authService = authService;
   }
 
