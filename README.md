@@ -1,8 +1,8 @@
+<p align="center"><img src="frontend/public/android-chrome-192x192.png" alt="Agiliza Logo" width="192"></p>
+
 # Agiliza
 
 Uma aplicação full-stack de gerenciamento de tarefas implementando Clean Architecture com Controle de Acesso Baseado em Papel.
-
-**Repositório:** https://github.com/oguarni/status-point.git
 
 ## 🚀 Início Rápido (Docker)
 
@@ -18,6 +18,14 @@ docker compose up
 ```
 
 ### Contas de Teste
+
+Para criar as contas de demonstração no banco de dados, execute:
+
+```bash
+docker compose exec backend npm run db:seed:all
+```
+
+Após executar o seeder, você poderá fazer login com as seguintes credenciais:
 
 | Papel | Email | Senha |
 |-------|-------|-------|
@@ -90,10 +98,10 @@ Este projeto segue **Clean Architecture** com 4 camadas:
 
 ### Diagramas de Arquitetura C4
 
-Diagramas de arquitetura detalhados estão disponíveis:
-- ![Contexto do Sistema](./docs/diagrams/SystemContext.png)
-- ![Visão de Contêiner](./docs/diagrams/Container.png)
-- ![Componentes Backend](./docs/diagrams/Component_Backend.png)
+Diagramas de arquitetura detalhados estão disponíveis (Mermaid):
+- [System Context Diagram](./docs/diagrams/C1_SystemContext.md)
+- [Container Diagram](./docs/diagrams/C2_Container.md)
+- [Backend Component Diagram](./docs/diagrams/C3_Component_Backend.md)
 
 ## 🧪 Testes
 
@@ -130,8 +138,6 @@ npm run test:coverage
 - `POST /api/projects` - Criar projeto (apenas admin/gestor)
 - `PUT /api/projects/:id` - Atualizar projeto
 - `DELETE /api/projects/:id` - Deletar projeto
-
-*Documentação completa da API em [CLAUDE.md](./CLAUDE.md#api-endpoints)*
 
 ## ⚙️ Configuração Manual (Sem Docker)
 
@@ -184,7 +190,7 @@ npm run dev
 
 Este projeto foi desenvolvido como trabalho da disciplina de **Arquitetura de Software (AS27S)**, da turma **7ES1**, ofertada pelo Curso de Engenharia de Software da **Universidade Tecnológica Federal do Paraná (UTFPR)**, campus Dois Vizinhos.
 
-**Orientação:** Profª. Dr. Francisco Carlos.
+**Orientação:** Prof. Dr. Francisco Carlos.
 
 O objetivo principal foi aplicar na prática os conceitos de **Clean Architecture**, **SOLID**, **Domain-Driven Design (DDD)** e **Controle de Acesso Baseado em Papel (RBAC)**.
 
@@ -196,12 +202,6 @@ O objetivo principal foi aplicar na prática os conceitos de **Clean Architectur
 ## 📄 Licença
 
 Licença MIT - veja o arquivo [LICENSE](./LICENSE) para detalhes.
-
-Projeto educacional para o curso de Engenharia de Software da UTFPR.
-
-## 👤 Autores
-
-Estudantes de Engenharia de Software do 7º semestre, UTFPR
 
 ---
 
