@@ -1,19 +1,14 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
+import { container } from '../container';
 import ProjectController from '../controllers/ProjectController';
-import ProjectService from '../services/ProjectService';
-import ProjectRepository from '../repositories/ProjectRepository';
-import UserRepository from '../repositories/UserRepository';
 import authMiddleware from '../middlewares/authMiddleware';
 import { requireGestorOrAdmin } from '../middlewares/roleMiddleware';
 
 const router = Router();
 
-// Initialize dependencies
-const projectRepository = new ProjectRepository();
-const userRepository = new UserRepository();
-const projectService = new ProjectService(projectRepository, userRepository);
-const projectController = new ProjectController(projectService);
+// Resolve controller from DI container
+const projectController = container.get<ProjectController>('ProjectController');
 
 // All routes require authentication
 router.use(authMiddleware);

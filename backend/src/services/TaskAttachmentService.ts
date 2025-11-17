@@ -1,14 +1,19 @@
+import { injectable, inject } from 'inversify';
 import TaskAttachmentRepository from '../repositories/TaskAttachmentRepository';
 import TaskRepository from '../repositories/TaskRepository';
 import { TaskAttachment } from '../domain/entities/TaskAttachment';
 import { AuthorizationError, UserNotFoundError } from '../errors';
 import fs from 'fs/promises';
 
+@injectable()
 class TaskAttachmentService {
   private taskAttachmentRepository: TaskAttachmentRepository;
   private taskRepository: TaskRepository;
 
-  constructor(taskAttachmentRepository: TaskAttachmentRepository, taskRepository: TaskRepository) {
+  constructor(
+    @inject('TaskAttachmentRepository') taskAttachmentRepository: TaskAttachmentRepository,
+    @inject('TaskRepository') taskRepository: TaskRepository
+  ) {
     this.taskAttachmentRepository = taskAttachmentRepository;
     this.taskRepository = taskRepository;
   }

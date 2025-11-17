@@ -1,3 +1,4 @@
+import { injectable } from 'inversify';
 import { Project as ProjectModel } from '../models';
 import { Project } from '../domain/entities/Project';
 import { ProjectMapper } from '../mappers/ProjectMapper';
@@ -6,6 +7,7 @@ import { CreateProjectDTO, UpdateProjectDTO } from '../interfaces/IProjectReposi
 /**
  * ProjectRepository class - Data Access Layer
  */
+@injectable()
 class ProjectRepository {
   /**
    * Find a project by ID

@@ -1,3 +1,4 @@
+import { injectable, inject } from 'inversify';
 import ProjectRepository from '../repositories/ProjectRepository';
 import UserRepository from '../repositories/UserRepository';
 import { Project } from '../domain/entities/Project';
@@ -7,11 +8,15 @@ import { CreateProjectDTO, UpdateProjectDTO } from '../interfaces/IProjectReposi
 /**
  * ProjectService class - Business Logic Layer
  */
+@injectable()
 class ProjectService {
   private projectRepository: ProjectRepository;
   private userRepository: UserRepository;
 
-  constructor(projectRepository: ProjectRepository, userRepository: UserRepository) {
+  constructor(
+    @inject('ProjectRepository') projectRepository: ProjectRepository,
+    @inject('UserRepository') userRepository: UserRepository
+  ) {
     this.projectRepository = projectRepository;
     this.userRepository = userRepository;
   }

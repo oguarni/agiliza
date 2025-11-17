@@ -1,9 +1,11 @@
+import { injectable } from 'inversify';
 import { Task as TaskModel } from '../models';
 import { Task } from '../domain/entities/Task';
 import { TaskMapper } from '../mappers/TaskMapper';
 import { CreateTaskDTO, UpdateTaskDTO, PaginationOptions, PaginatedResult } from '../interfaces/ITaskRepository';
 
 // TaskRepository class - Data Access Layer
+@injectable()
 class TaskRepository {
   /**
    * Find a task by ID

@@ -1,8 +1,10 @@
+import { injectable } from 'inversify';
 import { TaskComment as TaskCommentModel } from '../models';
 import { TaskComment } from '../domain/entities/TaskComment';
 import { TaskCommentMapper } from '../mappers/TaskCommentMapper';
 import { CreateTaskCommentDTO, UpdateTaskCommentDTO } from '../interfaces/ITaskCommentRepository';
 
+@injectable()
 class TaskCommentRepository {
   async findById(id: number): Promise<TaskComment | null> {
     try {

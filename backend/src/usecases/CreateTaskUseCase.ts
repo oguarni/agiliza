@@ -1,3 +1,4 @@
+import { injectable, inject } from 'inversify';
 import { ITaskRepository, CreateTaskDTO as RepoCreateTaskDTO } from '../interfaces/ITaskRepository';
 import { ILogger } from '../utils/logger';
 import { Task } from '../domain/entities/Task';
@@ -17,10 +18,11 @@ export interface CreateTaskInput {
  * Use case for creating a new task
  * Encapsulates business logic for task creation
  */
+@injectable()
 export class CreateTaskUseCase {
   constructor(
-    private taskRepository: ITaskRepository,
-    private logger: ILogger
+    @inject('TaskRepository') private taskRepository: ITaskRepository,
+    @inject('Logger') private logger: ILogger
   ) {}
 
   /**

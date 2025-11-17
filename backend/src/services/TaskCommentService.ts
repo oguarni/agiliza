@@ -1,13 +1,18 @@
+import { injectable, inject } from 'inversify';
 import TaskCommentRepository from '../repositories/TaskCommentRepository';
 import TaskRepository from '../repositories/TaskRepository';
 import { TaskComment } from '../domain/entities/TaskComment';
 import { AuthorizationError, UserNotFoundError } from '../errors';
 
+@injectable()
 class TaskCommentService {
   private taskCommentRepository: TaskCommentRepository;
   private taskRepository: TaskRepository;
 
-  constructor(taskCommentRepository: TaskCommentRepository, taskRepository: TaskRepository) {
+  constructor(
+    @inject('TaskCommentRepository') taskCommentRepository: TaskCommentRepository,
+    @inject('TaskRepository') taskRepository: TaskRepository
+  ) {
     this.taskCommentRepository = taskCommentRepository;
     this.taskRepository = taskRepository;
   }

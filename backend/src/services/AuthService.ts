@@ -1,3 +1,4 @@
+import { injectable, inject } from 'inversify';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import UserRepository from '../repositories/UserRepository';
@@ -37,11 +38,12 @@ interface AuthResponse {
 }
 
 // AuthService class - Business Logic Layer
+@injectable()
 class AuthService {
   private userRepository: UserRepository;
   private jwtSecret: string;
 
-  constructor(userRepository: UserRepository) {
+  constructor(@inject('UserRepository') userRepository: UserRepository) {
     this.userRepository = userRepository;
     this.jwtSecret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
   }

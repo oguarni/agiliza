@@ -1,17 +1,14 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
+import { container } from '../container';
 import AuthController from '../controllers/AuthController';
-import AuthService from '../services/AuthService';
-import UserRepository from '../repositories/UserRepository';
 import authMiddleware from '../middlewares/authMiddleware';
 import { requireAdmin } from '../middlewares/roleMiddleware';
 
 const router = Router();
 
-// Initialize dependencies
-const userRepository = new UserRepository();
-const authService = new AuthService(userRepository);
-const authController = new AuthController(authService);
+// Resolve controller from DI container
+const authController = container.get<AuthController>('AuthController');
 
 // POST /api/auth/register - User registration
 router.post(

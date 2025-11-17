@@ -1,17 +1,13 @@
 import { Router } from 'express';
+import { container } from '../container';
 import TaskAttachmentController from '../controllers/TaskAttachmentController';
-import TaskAttachmentService from '../services/TaskAttachmentService';
-import TaskAttachmentRepository from '../repositories/TaskAttachmentRepository';
-import TaskRepository from '../repositories/TaskRepository';
 import authMiddleware from '../middlewares/authMiddleware';
 import { upload } from '../middlewares/uploadMiddleware';
 
 const router = Router();
 
-const taskAttachmentRepository = new TaskAttachmentRepository();
-const taskRepository = new TaskRepository();
-const taskAttachmentService = new TaskAttachmentService(taskAttachmentRepository, taskRepository);
-const taskAttachmentController = new TaskAttachmentController(taskAttachmentService);
+// Resolve controller from DI container
+const taskAttachmentController = container.get<TaskAttachmentController>('TaskAttachmentController');
 
 router.use(authMiddleware);
 

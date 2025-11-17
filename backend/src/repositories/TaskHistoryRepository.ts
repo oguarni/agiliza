@@ -1,8 +1,10 @@
+import { injectable } from 'inversify';
 import { TaskHistory as TaskHistoryModel } from '../models';
 import { TaskHistory } from '../domain/entities/TaskHistory';
 import { TaskHistoryMapper } from '../mappers/TaskHistoryMapper';
 import { CreateTaskHistoryDTO } from '../interfaces/ITaskHistoryRepository';
 
+@injectable()
 class TaskHistoryRepository {
   async create(data: CreateTaskHistoryDTO): Promise<TaskHistory> {
     try {

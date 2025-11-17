@@ -1,3 +1,4 @@
+import { injectable, inject } from 'inversify';
 import { ITaskRepository } from '../interfaces/ITaskRepository';
 import { ILogger } from '../utils/logger';
 import { AuthorizationError, UserNotFoundError } from '../errors';
@@ -6,10 +7,11 @@ import { AuthorizationError, UserNotFoundError } from '../errors';
  * Use case for deleting a task
  * Encapsulates business logic for task deletion
  */
+@injectable()
 export class DeleteTaskUseCase {
   constructor(
-    private taskRepository: ITaskRepository,
-    private logger: ILogger
+    @inject('TaskRepository') private taskRepository: ITaskRepository,
+    @inject('Logger') private logger: ILogger
   ) {}
 
   /**

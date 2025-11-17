@@ -1,3 +1,4 @@
+import { injectable, inject } from 'inversify';
 import TaskRepository from '../repositories/TaskRepository';
 import TaskHistoryRepository from '../repositories/TaskHistoryRepository';
 import { AuthorizationError, UserNotFoundError } from '../errors';
@@ -23,13 +24,17 @@ interface UpdateTaskDTO {
 }
 
 // TaskService class - Business Logic Layer
+@injectable()
 class TaskService {
   private taskRepository: TaskRepository;
   private taskHistoryRepository: TaskHistoryRepository;
 
-  constructor(taskRepository: TaskRepository, taskHistoryRepository?: TaskHistoryRepository) {
+  constructor(
+    @inject('TaskRepository') taskRepository: TaskRepository,
+    @inject('TaskHistoryRepository') taskHistoryRepository: TaskHistoryRepository
+  ) {
     this.taskRepository = taskRepository;
-    this.taskHistoryRepository = taskHistoryRepository || new TaskHistoryRepository();
+    this.taskHistoryRepository = taskHistoryRepository;
   }
 
   /**

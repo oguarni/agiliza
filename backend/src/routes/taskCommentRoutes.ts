@@ -1,17 +1,13 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
+import { container } from '../container';
 import TaskCommentController from '../controllers/TaskCommentController';
-import TaskCommentService from '../services/TaskCommentService';
-import TaskCommentRepository from '../repositories/TaskCommentRepository';
-import TaskRepository from '../repositories/TaskRepository';
 import authMiddleware from '../middlewares/authMiddleware';
 
 const router = Router();
 
-const taskCommentRepository = new TaskCommentRepository();
-const taskRepository = new TaskRepository();
-const taskCommentService = new TaskCommentService(taskCommentRepository, taskRepository);
-const taskCommentController = new TaskCommentController(taskCommentService);
+// Resolve controller from DI container
+const taskCommentController = container.get<TaskCommentController>('TaskCommentController');
 
 router.use(authMiddleware);
 

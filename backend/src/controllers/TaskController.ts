@@ -1,12 +1,14 @@
+import { injectable, inject } from 'inversify';
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import TaskService from '../services/TaskService';
 
 // TaskController class - API Layer
+@injectable()
 class TaskController {
   private taskService: TaskService;
 
-  constructor(taskService: TaskService) {
+  constructor(@inject('TaskService') taskService: TaskService) {
     this.taskService = taskService;
   }
 
