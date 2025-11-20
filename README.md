@@ -1,6 +1,4 @@
-<p align="center"><img src="frontend/public/android-chrome-192x192.png" alt="Agiliza Logo" width="192"></p>
-
-# Agiliza
+<p align="center"><img src="frontend/public/android-chrome-192x192.png" alt="Logo" width="192"></p>
 
 Uma aplicação full-stack de gerenciamento de tarefas implementando Clean Architecture com Controle de Acesso Baseado em Papel.
 
@@ -187,7 +185,3 @@ O objetivo principal foi aplicar na prática os conceitos de **Clean Architectur
 ## 📄 Licença
 
 Licença MIT - veja o arquivo [LICENSE](./LICENSE) para detalhes.
-
----
-
-**Precisa de mais detalhes?** Confira [CLAUDE.md](./CLAUDE.md) para documentação abrangente.
