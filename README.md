@@ -209,7 +209,3 @@ O objetivo principal foi aplicar na prática os conceitos de **Clean Architectur
 ## 📄 Licença
 
 CC BY-NC-SA 4.0 - veja o arquivo [LICENSE](./LICENSE) para detalhes.
-
----
-
-**Precisa de mais detalhes?** Confira [CLAUDE.md](./CLAUDE.md) para documentação abrangente.
