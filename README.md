@@ -95,9 +95,9 @@ Este projeto segue **Clean Architecture** com 4 camadas:
 4. **Infraestrutura** - Implementações de framework (Express, Sequelize)
 
 Diagramas de arquitetura detalhados estão disponíveis:
-- ![Contexto do Sistema](./docs/diagrams/SystemContext.png)
-- ![Visão de Contêiner](./docs/diagrams/Container.png)
-- ![Componentes Backend](./docs/diagrams/Component_Backend.png)
+![Contexto do Sistema](./docs/diagrams/SystemContext.png)
+![Visão de Contêiner](./docs/diagrams/Container.png)
+![Componentes Backend](./docs/diagrams/Component_Backend.png)
 
 ## 🧪 Testes
 
