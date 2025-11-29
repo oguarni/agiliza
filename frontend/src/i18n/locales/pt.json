@@ -1,20 +1,6 @@
 {
-  "common": {
-    "logout": "Sair",
-    "save": "Salvar",
-    "cancel": "Cancelar",
-    "delete": "Excluir",
-    "edit": "Editar",
-    "create": "Criar",
-    "update": "Atualizar",
-    "loading": "Carregando...",
-    "error": "Erro",
-    "success": "Sucesso"
-  },
-  "nav": {
-    "myTasks": "Minhas Tarefas",
-    "kanbanBoard": "Quadro Kanban",
-    "projects": "Projetos"
+  "app": {
+    "title": "Status Point"
   },
   "auth": {
     "login": "Entrar",
@@ -22,78 +8,30 @@
     "email": "E-mail",
     "password": "Senha",
     "name": "Nome",
-    "role": "Função",
-    "loginTitle": "Entrar no Agiliza",
-    "registerTitle": "Criar Conta",
-    "noAccount": "Não tem uma conta?",
-    "haveAccount": "Já tem uma conta?",
-    "signIn": "Entrar",
-    "signUp": "Cadastrar"
+    "submit": "Enviar",
+    "have_account": "Já tem uma conta? Entre",
+    "no_account": "Não tem uma conta? Registre-se"
   },
-  "roles": {
-    "admin": "Administrador",
-    "gestor": "Gestor",
-    "colaborador": "Colaborador"
-  },
-  "tasks": {
-    "title": "Tarefas",
-    "newTask": "Nova Tarefa",
-    "editTask": "Editar Tarefa",
-    "taskTitle": "Título da Tarefa",
-    "description": "Descrição",
-    "status": "Status",
-    "priority": "Prioridade",
-    "dueDate": "Data de Vencimento",
-    "project": "Projeto",
-    "noTasks": "Nenhuma tarefa encontrada",
-    "createSuccess": "Tarefa criada com sucesso",
-    "updateSuccess": "Tarefa atualizada com sucesso",
-    "deleteSuccess": "Tarefa excluída com sucesso",
-    "deleteConfirm": "Tem certeza que deseja excluir esta tarefa?",
-    "markComplete": "Marcar como Concluída",
-    "details": "Detalhes",
-    "comments": "Comentários",
-    "attachments": "Anexos"
+  "common": {
+    "loading": "Carregando...",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "confirm": "Confirmar"
   },
   "status": {
-    "pending": "Pendente",
-    "completed": "Concluída",
-    "inProgress": "Em Progresso"
+    "todo": "A Fazer",
+    "in_progress": "Em Progresso",
+    "done": "Concluído"
   },
-  "priority": {
-    "low": "Baixa",
-    "medium": "Média",
-    "high": "Alta"
-  },
-  "projects": {
-    "title": "Projetos",
-    "newProject": "Novo Projeto",
-    "editProject": "Editar Projeto",
-    "projectName": "Nome do Projeto",
-    "projectTitle": "Título do Projeto",
-    "deadline": "Prazo",
+  "task": {
+    "status": "Status",
+    "description": "Descrição",
+    "description_placeholder": "Adicione uma descrição mais detalhada...",
+    "no_description": "Nenhuma descrição fornecida.",
     "created": "Criado em",
-    "noProject": "Sem Projeto",
-    "noProjects": "Nenhum projeto encontrado",
-    "createSuccess": "Projeto criado com sucesso",
-    "updateSuccess": "Projeto atualizado com sucesso",
-    "deleteSuccess": "Projeto excluído com sucesso",
-    "deleteConfirm": "Tem certeza que deseja excluir este projeto?",
-    "overdue": "Atrasado",
-    "urgent": "Urgente"
-  },
-  "kanban": {
-    "title": "Quadro Kanban",
-    "pending": "A Fazer",
-    "inProgress": "Em Progresso",
-    "completed": "Concluídas",
-    "dragAndDrop": "Arraste e solte as tarefas para alterar o status",
-    "noTasksInColumn": "Nenhuma tarefa nesta coluna",
-    "reopen": "Reabrir"
-  },
-  "language": {
-    "selectLanguage": "Idioma",
-    "english": "Inglês",
-    "portuguese": "Português"
+    "assignee": "Responsável",
+    "unassigned": "Não atribuído"
   }
 }
