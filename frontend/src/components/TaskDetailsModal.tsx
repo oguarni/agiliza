@@ -1,726 +1,152 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import {
-  getTaskComments,
-  createComment,
-  updateComment,
-  deleteComment,
-  Comment,
-} from '../services/commentService';
-import {
-  getTaskAttachments,
-  uploadAttachment,
-  deleteAttachment,
-  formatFileSize,
-  Attachment,
-} from '../services/attachmentService';
-
-interface Task {
-  id: number;
-  title: string;
-  description: string | null;
-  status: 'pending' | 'completed';
-  priority: 'low' | 'medium' | 'high' | null;
-  dueDate: string | null;
-}
+import { X, Calendar, User, AlignLeft, CheckSquare, Clock, AlertCircle } from 'lucide-react';
+import { Task } from '../services/api';
 
 interface TaskDetailsModalProps {
-  task: Task;
+  task: Task | null;
+  isOpen: boolean;
   onClose: () => void;
-  onTaskUpdate?: () => void; // Optional: call when task needs refresh
+  onUpdate: (taskId: number, updates: Partial<Task>) => Promise<void>;
 }
 
-const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({ task, onClose }) => {
-  const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'details' | 'comments' | 'attachments'>('details');
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [attachments, setAttachments] = useState<Attachment[]>([]);
-  const [newComment, setNewComment] = useState('');
-  const [editingComment, setEditingComment] = useState<Comment | null>(null);
-  const [editContent, setEditContent] = useState('');
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState('');
-  const [confirmingDelete, setConfirmingDelete] = useState<{ type: 'comment' | 'attachment', id: number } | null>(null);
+const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({ task, isOpen, onClose, onUpdate }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTask, setEditedTask] = useState<Partial<Task>>({});
 
   useEffect(() => {
-    if (activeTab === 'comments') {
-      fetchComments();
-    } else if (activeTab === 'attachments') {
-      fetchAttachments();
+    if (task) {
+      setEditedTask(task);
     }
-  }, [activeTab, task.id]);
+  }, [task]);
 
-  const fetchComments = async () => {
-    try {
-      const data = await getTaskComments(task.id);
-      setComments(data);
-      setError('');
-    } catch (err) {
-      setError('Failed to load comments');
-      console.error(err);
+  if (!isOpen || !task) return null;
+
+  const handleSave = async () => {
+    if (task.id) {
+      await onUpdate(task.id, editedTask);
+      setIsEditing(false);
     }
   };
 
-  const fetchAttachments = async () => {
-    try {
-      const data = await getTaskAttachments(task.id);
-      setAttachments(data);
-      setError('');
-    } catch (err) {
-      setError('Failed to load attachments');
-      console.error(err);
-    }
-  };
-
-  const handleAddComment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newComment.trim()) return;
-
-    try {
-      await createComment(task.id, { content: newComment });
-      setNewComment('');
-      fetchComments();
-    } catch (err) {
-      setError('Failed to add comment');
-      console.error(err);
-    }
-  };
-
-  const handleUpdateComment = async (commentId: number) => {
-    if (!editContent.trim()) return;
-
-    try {
-      await updateComment(commentId, { content: editContent });
-      setEditingComment(null);
-      setEditContent('');
-      fetchComments();
-    } catch (err) {
-      setError('Failed to update comment');
-      console.error(err);
-    }
-  };
-
-  const handleDeleteComment = async (commentId: number) => {
-    try {
-      await deleteComment(commentId);
-      setConfirmingDelete(null);
-      fetchComments();
-    } catch (err) {
-      setError('Failed to delete comment');
-      console.error(err);
-    }
-  };
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    try {
-      setUploading(true);
-      await uploadAttachment(task.id, file);
-      fetchAttachments();
-      e.target.value = '';
-    } catch (err) {
-      setError('Failed to upload file');
-      console.error(err);
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleDeleteAttachment = async (attachmentId: number) => {
-    try {
-      await deleteAttachment(attachmentId);
-      setConfirmingDelete(null);
-      fetchAttachments();
-    } catch (err) {
-      setError('Failed to delete attachment');
-      console.error(err);
-    }
-  };
-
-  const handleDownloadAttachment = async (attachmentId: number, filename: string) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/attachments/${attachmentId}/download`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Download failed');
-      }
-
-      // Create blob from response
-      const blob = await response.blob();
-
-      // Create temporary URL and trigger download
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-
-      // Cleanup
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (err) {
-      setError('Failed to download attachment');
-      console.error(err);
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
+  const statusOptions = [
+    { value: 'TODO', label: 'To Do', icon: AlertCircle, color: 'text-gray-500' },
+    { value: 'IN_PROGRESS', label: 'In Progress', icon: Clock, color: 'text-blue-500' },
+    { value: 'DONE', label: 'Done', icon: CheckSquare, color: 'text-green-500' }
+  ];
 
   return (
-    <div style={styles.overlay} onClick={onClose}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <div style={styles.header}>
-          <h2 style={styles.title}>{task.title}</h2>
-          <button onClick={onClose} style={styles.closeButton}>
-            ×
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center p-6 border-b">
+            {isEditing ? (
+                <input
+                    type="text"
+                    value={editedTask.title}
+                    onChange={(e) => setEditedTask({ ...editedTask, title: e.target.value })}
+                    className="text-xl font-bold w-full border rounded px-2 py-1"
+                />
+            ) : (
+                <h2 className="text-xl font-bold text-gray-800">{task.title}</h2>
+            )}
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            <X size={24} />
           </button>
         </div>
 
-        {error && <div style={styles.error}>{error}</div>}
+        {/* Content */}
+        <div className="p-6 space-y-6">
+          
+          {/* Status Selector (The New Feature) */}
+          <div className="flex items-center space-x-3">
+             <div className="w-full">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Status
+                </label>
+                {isEditing ? (
+                    <select
+                        value={editedTask.status}
+                        onChange={(e) => setEditedTask({ ...editedTask, status: e.target.value })}
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    >
+                        {statusOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                ) : (
+                    <div className={`flex items-center space-x-2 px-3 py-1 rounded-full bg-gray-100 w-fit ${statusOptions.find(o => o.value === task.status)?.color}`}>
+                        <span className="font-medium">
+                            {statusOptions.find(o => o.value === task.status)?.label || task.status}
+                        </span>
+                    </div>
+                )}
+             </div>
+          </div>
 
-        {confirmingDelete && (
-          <div style={styles.confirmOverlay}>
-            <div style={styles.confirmDialog}>
-              <p style={styles.confirmMessage}>
-                Are you sure you want to delete this {confirmingDelete.type}?
-              </p>
-              <div style={styles.confirmActions}>
-                <button
-                  onClick={() => {
-                    if (confirmingDelete.type === 'comment') {
-                      handleDeleteComment(confirmingDelete.id);
-                    } else {
-                      handleDeleteAttachment(confirmingDelete.id);
-                    }
-                  }}
-                  style={styles.confirmButton}
-                >
-                  Yes, Delete
-                </button>
-                <button
-                  onClick={() => setConfirmingDelete(null)}
-                  style={styles.cancelConfirmButton}
-                >
-                  Cancel
-                </button>
+          {/* Description */}
+          <div className="space-y-2">
+            <div className="flex items-center text-gray-600">
+              <AlignLeft size={20} className="mr-2" />
+              <h3 className="font-semibold">Description</h3>
+            </div>
+            {isEditing ? (
+              <textarea
+                value={editedTask.description || ''}
+                onChange={(e) => setEditedTask({ ...editedTask, description: e.target.value })}
+                className="w-full h-32 p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Add a more detailed description..."
+              />
+            ) : (
+              <div className="bg-gray-50 p-4 rounded-md text-gray-700 min-h-[5rem] whitespace-pre-wrap">
+                {task.description || "No description provided."}
               </div>
+            )}
+          </div>
+
+          {/* Meta Information */}
+          <div className="grid grid-cols-2 gap-4 text-sm text-gray-500 pt-4 border-t">
+            <div className="flex items-center">
+              <Calendar size={16} className="mr-2" />
+              <span>Created: {new Date(task.createdAt).toLocaleDateString()}</span>
+            </div>
+            <div className="flex items-center">
+              <User size={16} className="mr-2" />
+              <span>Assignee: {task.assigneeId || "Unassigned"}</span>
             </div>
           </div>
-        )}
-
-        <div style={styles.tabs}>
-          <button
-            style={{ ...styles.tab, ...(activeTab === 'details' ? styles.tabActive : {}) }}
-            onClick={() => setActiveTab('details')}
-          >
-            Details
-          </button>
-          <button
-            style={{ ...styles.tab, ...(activeTab === 'comments' ? styles.tabActive : {}) }}
-            onClick={() => setActiveTab('comments')}
-          >
-            Comments ({comments.length})
-          </button>
-          <button
-            style={{ ...styles.tab, ...(activeTab === 'attachments' ? styles.tabActive : {}) }}
-            onClick={() => setActiveTab('attachments')}
-          >
-            Attachments ({attachments.length})
-          </button>
         </div>
 
-        <div style={styles.content}>
-          {activeTab === 'details' && (
-            <div>
-              <div style={styles.detailRow}>
-                <strong>Status:</strong>
-                <span style={styles.badge}>{task.status}</span>
-              </div>
-              <div style={styles.detailRow}>
-                <strong>Priority:</strong>
-                <span style={styles.badge}>{task.priority || 'none'}</span>
-              </div>
-              {task.dueDate && (
-                <div style={styles.detailRow}>
-                  <strong>Due Date:</strong>
-                  <span>{formatDate(task.dueDate)}</span>
-                </div>
-              )}
-              {task.description && (
-                <div style={styles.detailRow}>
-                  <strong>Description:</strong>
-                  <p style={styles.description}>{task.description}</p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {activeTab === 'comments' && (
-            <div>
-              <form onSubmit={handleAddComment} style={styles.commentForm}>
-                <textarea
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  placeholder="Write a comment..."
-                  style={styles.commentInput}
-                  rows={3}
-                />
-                <button type="submit" style={styles.submitButton}>
-                  Add Comment
-                </button>
-              </form>
-
-              <div style={styles.commentsList}>
-                {comments.length === 0 ? (
-                  <p style={styles.emptyMessage}>No comments yet. Be the first to comment!</p>
-                ) : (
-                  comments.map((comment) => (
-                    <div key={comment.id} style={styles.commentCard}>
-                      {editingComment?.id === comment.id ? (
-                        <div>
-                          <textarea
-                            value={editContent}
-                            onChange={(e) => setEditContent(e.target.value)}
-                            style={styles.commentInput}
-                            rows={3}
-                          />
-                          <div style={styles.commentActions}>
-                            <button
-                              onClick={() => handleUpdateComment(comment.id)}
-                              style={styles.saveButton}
-                            >
-                              Save
-                            </button>
-                            <button
-                              onClick={() => {
-                                setEditingComment(null);
-                                setEditContent('');
-                              }}
-                              style={styles.cancelButton}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div>
-                          <p style={styles.commentContent}>{comment.content}</p>
-                          <div style={styles.commentMeta}>
-                            <span style={styles.commentDate}>{formatDate(comment.created_at)}</span>
-                            {comment.user_id === user?.id && (
-                              <div style={styles.commentActions}>
-                                <button
-                                  onClick={() => {
-                                    setEditingComment(comment);
-                                    setEditContent(comment.content);
-                                  }}
-                                  style={styles.editButton}
-                                >
-                                  Edit
-                                </button>
-                                <button
-                                  onClick={() => setConfirmingDelete({ type: 'comment', id: comment.id })}
-                                  style={styles.deleteButton}
-                                >
-                                  Delete
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'attachments' && (
-            <div>
-              <div style={styles.uploadSection}>
-                <input
-                  type="file"
-                  onChange={handleFileUpload}
-                  disabled={uploading}
-                  style={styles.fileInput}
-                  id="file-upload"
-                />
-                <label htmlFor="file-upload" style={styles.uploadButton}>
-                  {uploading ? 'Uploading...' : 'Choose File'}
-                </label>
-              </div>
-
-              <div style={styles.attachmentsList}>
-                {attachments.length === 0 ? (
-                  <p style={styles.emptyMessage}>No attachments yet. Upload a file to get started!</p>
-                ) : (
-                  attachments.map((attachment) => (
-                    <div key={attachment.id} style={styles.attachmentCard}>
-                      <div style={styles.attachmentInfo}>
-                        <div style={styles.attachmentIcon}>📎</div>
-                        <div>
-                          <p style={styles.attachmentName}>{attachment.filename}</p>
-                          <p style={styles.attachmentMeta}>
-                            {formatFileSize(attachment.size)} • {formatDate(attachment.created_at)}
-                          </p>
-                        </div>
-                      </div>
-                      <div style={styles.attachmentActions}>
-                        <button
-                          onClick={() => handleDownloadAttachment(attachment.id, attachment.filename)}
-                          style={styles.downloadButton}
-                        >
-                          Download
-                        </button>
-                        {attachment.user_id === user?.id && (
-                          <button
-                            onClick={() => setConfirmingDelete({ type: 'attachment', id: attachment.id })}
-                            style={styles.deleteButton}
-                          >
-                            Delete
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
+        {/* Footer */}
+        <div className="p-6 border-t bg-gray-50 flex justify-end space-x-3 rounded-b-lg">
+          {isEditing ? (
+            <>
+              <button
+                onClick={() => setIsEditing(false)}
+                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+            >
+              Edit
+            </button>
           )}
         </div>
       </div>
     </div>
   );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-  overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1000,
-  },
-  modal: {
-    backgroundColor: '#262626',
-    borderRadius: '8px',
-    width: '90%',
-    maxWidth: '700px',
-    maxHeight: '90vh',
-    display: 'flex',
-    flexDirection: 'column',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
-    border: '1px solid #404040',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '1.5rem',
-    borderBottom: '1px solid #404040',
-  },
-  title: {
-    margin: 0,
-    fontSize: '1.5rem',
-    color: '#E5E5E5',
-  },
-  closeButton: {
-    background: 'none',
-    border: 'none',
-    fontSize: '2rem',
-    cursor: 'pointer',
-    color: '#b0b0b0',
-    lineHeight: 1,
-    padding: 0,
-    width: '32px',
-    height: '32px',
-  },
-  error: {
-    margin: '1rem 1.5rem 0',
-    padding: '1rem',
-    backgroundColor: '#dc3545',
-    color: '#E5E5E5',
-    borderRadius: '4px',
-  },
-  tabs: {
-    display: 'flex',
-    borderBottom: '1px solid #404040',
-    padding: '0 1.5rem',
-  },
-  tab: {
-    padding: '1rem 1.5rem',
-    background: 'none',
-    border: 'none',
-    borderBottom: '3px solid transparent',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    fontWeight: '500',
-    color: '#b0b0b0',
-    transition: 'all 0.2s',
-  },
-  tabActive: {
-    color: '#F97316',
-    borderBottomColor: '#F97316',
-  },
-  content: {
-    padding: '1.5rem',
-    overflowY: 'auto',
-    flex: 1,
-  },
-  detailRow: {
-    marginBottom: '1rem',
-    display: 'flex',
-    gap: '0.5rem',
-    alignItems: 'flex-start',
-    color: '#E5E5E5',
-  },
-  badge: {
-    padding: '0.25rem 0.75rem',
-    backgroundColor: '#404040',
-    borderRadius: '4px',
-    fontSize: '0.875rem',
-    fontWeight: '500',
-    textTransform: 'capitalize',
-    color: '#E5E5E5',
-  },
-  description: {
-    margin: '0.5rem 0 0 0',
-    color: '#b0b0b0',
-    lineHeight: '1.6',
-  },
-  commentForm: {
-    marginBottom: '1.5rem',
-  },
-  commentInput: {
-    width: '100%',
-    padding: '0.75rem',
-    border: '1px solid #404040',
-    borderRadius: '4px',
-    fontSize: '1rem',
-    marginBottom: '0.5rem',
-    boxSizing: 'border-box',
-    resize: 'vertical',
-    backgroundColor: '#171717',
-    color: '#E5E5E5',
-  },
-  submitButton: {
-    padding: '0.5rem 1.5rem',
-    backgroundColor: '#F97316',
-    color: '#E5E5E5',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontWeight: '500',
-  },
-  commentsList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-  },
-  emptyMessage: {
-    textAlign: 'center',
-    color: '#6c6c6c',
-    padding: '2rem',
-    fontStyle: 'italic',
-  },
-  commentCard: {
-    padding: '1rem',
-    backgroundColor: '#171717',
-    borderRadius: '6px',
-    borderLeft: '3px solid #F97316',
-  },
-  commentContent: {
-    margin: '0 0 0.5rem 0',
-    color: '#E5E5E5',
-    lineHeight: '1.5',
-  },
-  commentMeta: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  commentDate: {
-    fontSize: '0.75rem',
-    color: '#6c6c6c',
-  },
-  commentActions: {
-    display: 'flex',
-    gap: '0.5rem',
-  },
-  editButton: {
-    padding: '0.25rem 0.75rem',
-    backgroundColor: 'transparent',
-    color: '#F97316',
-    border: '1px solid #F97316',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '0.75rem',
-  },
-  deleteButton: {
-    padding: '0.25rem 0.75rem',
-    backgroundColor: 'transparent',
-    color: '#dc3545',
-    border: '1px solid #dc3545',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '0.75rem',
-  },
-  saveButton: {
-    padding: '0.25rem 0.75rem',
-    backgroundColor: '#F97316',
-    color: '#E5E5E5',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '0.75rem',
-  },
-  cancelButton: {
-    padding: '0.25rem 0.75rem',
-    backgroundColor: '#404040',
-    color: '#E5E5E5',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '0.75rem',
-  },
-  uploadSection: {
-    marginBottom: '1.5rem',
-  },
-  fileInput: {
-    display: 'none',
-  },
-  uploadButton: {
-    display: 'inline-block',
-    padding: '0.75rem 1.5rem',
-    backgroundColor: '#F97316',
-    color: '#E5E5E5',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontWeight: '500',
-  },
-  attachmentsList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.75rem',
-  },
-  attachmentCard: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '1rem',
-    backgroundColor: '#171717',
-    borderRadius: '6px',
-    border: '1px solid #404040',
-  },
-  attachmentInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-    flex: 1,
-  },
-  attachmentIcon: {
-    fontSize: '2rem',
-  },
-  attachmentName: {
-    margin: 0,
-    fontWeight: '500',
-    color: '#E5E5E5',
-  },
-  attachmentMeta: {
-    margin: '0.25rem 0 0 0',
-    fontSize: '0.75rem',
-    color: '#6c6c6c',
-  },
-  attachmentActions: {
-    display: 'flex',
-    gap: '0.5rem',
-    alignItems: 'center',
-  },
-  downloadButton: {
-    padding: '0.5rem 1rem',
-    backgroundColor: '#F97316',
-    color: '#E5E5E5',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '0.875rem',
-    fontWeight: '500',
-  },
-  confirmOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1001,
-    borderRadius: '8px',
-  },
-  confirmDialog: {
-    backgroundColor: '#262626',
-    padding: '2rem',
-    borderRadius: '8px',
-    border: '1px solid #404040',
-    maxWidth: '400px',
-    width: '90%',
-  },
-  confirmMessage: {
-    margin: '0 0 1.5rem 0',
-    color: '#E5E5E5',
-    fontSize: '1rem',
-    textAlign: 'center',
-  },
-  confirmActions: {
-    display: 'flex',
-    gap: '1rem',
-    justifyContent: 'center',
-  },
-  confirmButton: {
-    padding: '0.75rem 1.5rem',
-    backgroundColor: '#dc3545',
-    color: '#E5E5E5',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontWeight: '500',
-    fontSize: '1rem',
-  },
-  cancelConfirmButton: {
-    padding: '0.75rem 1.5rem',
-    backgroundColor: '#404040',
-    color: '#E5E5E5',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontWeight: '500',
-    fontSize: '1rem',
-  },
 };
 
 export default TaskDetailsModal;
