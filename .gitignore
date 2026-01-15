@@ -95,3 +95,7 @@ seedDatabase.ts
 /package.json
 /.sequelizerc
 /.claude
+
+# Project-specific exclusions
+/apply_updates.py
+docs/screenshots/
