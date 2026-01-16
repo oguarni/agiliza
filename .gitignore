@@ -99,3 +99,17 @@ seedDatabase.ts
 # Project-specific exclusions
 /apply_updates.py
 docs/screenshots/
+frontend/favicon/
+docs/diagrams/*.png
+docs/diagrams/*.svg
+
+# Obsolete documentation and scripts
+COMPLETION_SUMMARY.md
+ONE_COMMAND_SETUP.md
+QUICK_START.md
+QUICKSTART.md
+TEST_CREDENTIALS.md
+RELATÓRIO_FINAL_PROJETO_AGILIZA.md
+scripts/check-prerequisites.js
+start-backend.sh
+start-frontend.sh
