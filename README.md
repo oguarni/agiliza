@@ -97,12 +97,8 @@ O projeto adota estritamente a **Clean Architecture**, segmentando o backend em 
 
 ### Artefatos Disponíveis
 
-- **Modelo C4:** Disponível no diretório `docs/diagrams/` (Contexto, Contêiner, Componentes).
+- **Modelo C4:** Contexto, Contêiner e Componentes.
 - **Modelo ER:** Diagrama de Entidade-Relacionamento do banco de dados PostgreSQL.
-
-![Contexto do Sistema](./docs/diagrams/SystemContext.png)
-![Visão de Contêiner](./docs/diagrams/Container.png)
-![Componentes Backend](./docs/diagrams/Component_Backend.png)
 
 ## 🛠️ Stack Tecnológica
 
@@ -171,4 +167,4 @@ Este projeto foi desenvolvido como requisito final da disciplina de **Arquitetur
 
 ## 📄 Licença
 
-CC BY-NC-SA 4.0 - veja o arquivo [LICENSE](./LICENSE) para detalhes.
+Este projeto está licenciado sob a licença **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)** - veja o arquivo [LICENSE](./LICENSE) para detalhes.
