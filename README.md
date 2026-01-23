@@ -4,7 +4,7 @@
   Sistema de Gestão de Tarefas
 </h1>
 <p align="center">
-<strong>Arquitetura Limpa | SOLID | DDD | RBAC</strong>
+<strong>Clean Architecture | SOLID | DDD | RBAC</strong>
 </p>
 
 <p align="center">
@@ -152,7 +152,6 @@ docker compose exec backend npm run db:seed:all
 
 ## 📄 Documentação
 
-- **Requisitos e Regras de Negócio:** Consultar [Relatório Final](./RELATÓRIO_FINAL_PROJETO_AGILIZA.md)
 - **Documentação de Desenvolvimento:** Consultar [CLAUDE.md](./CLAUDE.md)
 - **Diagramas de Arquitetura:** Disponíveis no diretório `docs/diagrams/`
 
