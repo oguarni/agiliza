@@ -37,7 +37,7 @@ services:
     # Port mapping: host:container
     # Maps host port 5432 to container port 5432
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5433:5432"
 
     # Environment variables for PostgreSQL initialization
     environment:
@@ -78,7 +78,7 @@ services:
     # Port mapping: host:container
     # Maps host port 3001 to container port 3001
     ports:
-      - "3001:3001"
+      - "127.0.0.1:3001:3001"
 
     # Environment variables for the backend
     # These override defaults and configure database connection
@@ -141,7 +141,7 @@ services:
     # Port mapping: host:container
     # Maps host port 3000 to container port 3000
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3002:3000"
 
     # Environment variables for the frontend (optional)
     environment:

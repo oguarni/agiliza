@@ -15,7 +15,7 @@
 
 | Layer | Technology |
 |-------|------------|
-| Backend | TypeScript, Node.js, Express, PostgreSQL, Sequelize, tsyringe |
+| Backend | TypeScript, Node.js, Express 4, PostgreSQL, Sequelize, Inversify (DI) |
 | Frontend | React 18, TypeScript, Vite, TailwindCSS, React Router, Axios |
 | DevOps | Docker, Docker Compose |
 

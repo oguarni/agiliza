@@ -1,6 +1,6 @@
 # Backend Development Guide
 
-> **Stack**: TypeScript, Node.js, Express, PostgreSQL, Sequelize, tsyringe
+> **Stack**: TypeScript, Node.js, Express, PostgreSQL, Sequelize, Inversify
 > **Architecture**: Clean Architecture with DDD and SOLID principles
 
 ---
@@ -12,7 +12,7 @@ backend/src/
 ├── app.ts                    # Express app factory
 ├── server.ts                 # Entry point
 ├── config/                   # Configuration
-├── container/                # tsyringe DI container
+├── container/                # Inversify DI container
 ├── controllers/              # HTTP handlers
 ├── domain/
 │   └── entities/            # Business entities (Task, User, Project)
@@ -270,11 +270,11 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
 
 ## 7. Dependency Injection
 
-Use `tsyringe` for DI. Register in `container/index.ts`.
+Use `Inversify` for DI. Register in `container/index.ts`.
 
 ```typescript
 // container/index.ts
-import { container } from 'tsyringe';
+import { container } from 'Inversify';
 
 // Repositories
 container.registerSingleton<ITaskRepository>('TaskRepository', TaskRepository);
